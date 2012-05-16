@@ -1,3 +1,4 @@
+*.o
 /conf/general
 /web/down.html
 /tileserver/tileserver
