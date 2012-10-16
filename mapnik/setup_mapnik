@@ -35,9 +35,9 @@ fi
 # 3. Generate the XML
 
 MYSOCIETY_DIR=/data/mysociety/services/TilMa/mapnik
-HOST=arrow.int.ukcod.org.uk
+HOST=elephant.ukcod.org.uk
 cd mapnik
 ./generate_xml.py $MYSOCIETY_DIR/osm-names.xml ../mapumental-names.xml --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap-gb --user openstreetmap-gb --host $HOST --port 5432 --accept-none
 ./generate_xml.py $MYSOCIETY_DIR/osm-grey.xml ../mapumental-map.xml --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap-gb --user openstreetmap-gb --host $HOST --port 5432 --accept-none
-./generate_xml.py osm.xml ../osm/osm.xml --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap-gb --user openstreetmap-gb --host arrow.int.ukcod.org.uk --port 5432 --accept-none
+./generate_xml.py osm.xml ../osm/osm.xml --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap-gb --user openstreetmap-gb --host $HOST --port 5432 --accept-none
 
