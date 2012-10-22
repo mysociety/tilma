@@ -2,3 +2,6 @@
 /conf/general
 /web/down.html
 /tileserver/tileserver
+
+/mapnik/osm-grey.xml
+/mapnik/osm-names.xml

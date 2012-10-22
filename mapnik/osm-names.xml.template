@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE Map [
-<!ENTITY % entities SYSTEM "/data/vhost/tilma.mysociety.org/mapnik/inc/entities.xml.inc">
+<!ENTITY % entities SYSTEM "%(mysociety_path)s/mapnik/inc/entities.xml.inc">
 %entities;
 ]>
 <Map bgcolor="transparent" srs="&srs900913;" minimum_version="0.7.1">
