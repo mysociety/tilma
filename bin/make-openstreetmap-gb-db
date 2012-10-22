@@ -1,0 +1,37 @@
+#!/bin/bash
+#
+# Sets up a new OSM database, name openstreetmap, user openstreetmap with all
+# GB data in it, downloaded from GeoFabrik.
+#
+# The easiest way, with two database servers, is to create a new database with
+# up-to-date data on the other server, then switch anything using it across,
+# and then remove the old database.
+
+set -e
+
+HOST=$1
+if [ -z "$HOST" ]; then
+    echo "Please provide a database hostname"
+    exit 1
+fi
+
+# Required packages to build osm2pgsql
+sudo apt-get install -y autoconf libgeos-dev proj
+sudo apt-get install -y -t testing libprotobuf-c0-dev protobuf-c-compiler
+
+# Clone and build osm2pgsql
+if [ -d osm2pgsql ]; then
+    cd osm2pgsql
+    git pull
+else
+    git clone https://github.com/openstreetmap/osm2pgsql.git
+    cd osm2pgsql
+fi
+make
+
+# Fetch data
+curl -O http://download.geofabrik.de/openstreetmap/europe/great_britain.osm.pbf
+
+# Import it
+./osm2pgsql -S ./default.style -d openstreetmap -s -U openstreetmap -H $HOST -W ./great_britain.osm.pbf
+
