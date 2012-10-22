@@ -29,7 +29,7 @@ fi
 
 # 2. Checkout mapnik, 0.7 branch
 
-if [ "$@" =~ 'mapnik' ]]
+if [[ "$@" =~ 'mapnik' ]]
 then
     cd tmp
     svn checkout -r 27279 http://svn.openstreetmap.org/applications/rendering/mapnik
@@ -39,7 +39,7 @@ fi
 
 # 3. Generate the XML
 
-if [ "$@" =~ 'xml' ]]
+if [[ "$@" =~ 'xml' ]]
 then
     MYSOCIETY_DIR=$BASE_DIR/tilma/mapnik
     cd mapnik
