@@ -5367,7 +5367,8 @@
        from &prefix;_polygon
        where name is not null
          and (waterway is null or waterway != 'riverbank')
-       order by z_order,way_area desc
+         and place is null
+       order by way_area desc
       ) as text
       </Parameter>
       &datasource-settings;
@@ -5378,7 +5379,7 @@
     <StyleName>boundary</StyleName>
     <Datasource>
       <Parameter name="table">
-      (select way,way_area,name,boundary from &prefix;_polygon where boundary='national_park') as boundary
+      (select way,way_area,name,boundary from &prefix;_polygon where boundary='national_park' and building is null) as boundary
       </Parameter>
       &datasource-settings;
     </Datasource>
