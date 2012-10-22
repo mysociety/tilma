@@ -3,14 +3,15 @@
 
 # 1. Get the external shapefile data for low level things
 
-BASE_DIR=/data/vhost/tilma.mysociety.org
-HOST=elephant.ukcod.org.uk
+BASE_DIR=/export/vhost/tilma.mysociety.org
+NAME=`hostname`
+HOST=$NAME.ukcod.org.uk
 
 cd $BASE_DIR
+mkdir -p tmp
 
-if [ ! -f world_boundaries/places.shp ]
+if [[ "$@" =~ 'boundaries' ]]
 then
-    mkdir -p tmp
     cd tmp
     wget http://tile.openstreetmap.org/world_boundaries-spherical.tgz
     wget http://tile.openstreetmap.org/processed_p.tar.bz2
@@ -22,23 +23,30 @@ then
     tar xjf shoreline_300.tar.bz2 -C world_boundaries
     unzip 10m-populated-places.zip -d world_boundaries
     unzip 110m-admin-0-boundary-lines.zip -d world_boundaries
-    mv world_boundaries/* ../world_boundaries/*
+    echo "Boundary files unzipped in $BASE_DIR/tmp/world_boundaries"
     cd ..
-    rm -rf tmp
 fi
 
-# 2. Checkout mapnik
+# 2. Checkout mapnik, 0.7 branch
 
-if [ ! -d mapnik ]
+if [ "$@" =~ 'mapnik' ]]
 then
-    svn checkout http://svn.openstreetmap.org/applications/rendering/mapnik
+    cd tmp
+    svn checkout -r 27279 http://svn.openstreetmap.org/applications/rendering/mapnik
+    echo "Mapnik OSM styling in $BASE_DIR/tmp/mapnik"
+    cd ..
 fi
 
 # 3. Generate the XML
 
-MYSOCIETY_DIR=$BASE_DIR/tilma/mapnik
-cd mapnik
-./generate_xml.py $MYSOCIETY_DIR/osm-names.xml ../osm/mapumental-names.xml.new --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap --user openstreetmap --host $HOST --port 5432 --accept-none
-./generate_xml.py $MYSOCIETY_DIR/osm-grey.xml ../osm/mapumental-map.xml.new --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap --user openstreetmap --host $HOST --port 5432 --accept-none
-./generate_xml.py osm.xml ../osm/osm.xml.new --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap --user openstreetmap --host $HOST --port 5432 --accept-none
+if [ "$@" =~ 'xml' ]]
+then
+    MYSOCIETY_DIR=$BASE_DIR/tilma/mapnik
+    cd mapnik
+    ./generate_xml.py $MYSOCIETY_DIR/osm-names.xml ../tmp/mapumental-names.xml --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap --user openstreetmap --host $HOST --port 5432 --accept-none
+    ./generate_xml.py $MYSOCIETY_DIR/osm-grey.xml ../tmp/mapumental-map.xml --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap --user openstreetmap --host $HOST --port 5432 --accept-none
+    ./generate_xml.py osm.xml ../tmp/osm.xml --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap --user openstreetmap --host $HOST --port 5432 --accept-none
+    echo "New XML files present in $BASE_DIR/tmp/"
+    cd ..
+fi
 
