@@ -4,9 +4,11 @@
 # 1. Get the external shapefile data for low level things
 
 BASE_DIR=/data/vhost/tilma.mysociety.org
+HOST=elephant.ukcod.org.uk
 
 cd $BASE_DIR
-if [ ! -d world_boundaries ]
+
+if [ ! -f world_boundaries/places.shp ]
 then
     mkdir -p tmp
     cd tmp
@@ -20,7 +22,7 @@ then
     tar xjf shoreline_300.tar.bz2 -C world_boundaries
     unzip 10m-populated-places.zip -d world_boundaries
     unzip 110m-admin-0-boundary-lines.zip -d world_boundaries
-    mv world_boundaries ..
+    mv world_boundaries/* ../world_boundaries/*
     cd ..
     rm -rf tmp
 fi
@@ -34,10 +36,9 @@ fi
 
 # 3. Generate the XML
 
-MYSOCIETY_DIR=/data/mysociety/services/TilMa/mapnik
-HOST=elephant.ukcod.org.uk
+MYSOCIETY_DIR=$BASE_DIR/tilma/mapnik
 cd mapnik
-./generate_xml.py $MYSOCIETY_DIR/osm-names.xml ../mapumental-names.xml --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap-gb --user openstreetmap-gb --host $HOST --port 5432 --accept-none
-./generate_xml.py $MYSOCIETY_DIR/osm-grey.xml ../mapumental-map.xml --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap-gb --user openstreetmap-gb --host $HOST --port 5432 --accept-none
-./generate_xml.py osm.xml ../osm/osm.xml --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap-gb --user openstreetmap-gb --host $HOST --port 5432 --accept-none
+./generate_xml.py $MYSOCIETY_DIR/osm-names.xml ../osm/mapumental-names.xml.new --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap --user openstreetmap --host $HOST --port 5432 --accept-none
+./generate_xml.py $MYSOCIETY_DIR/osm-grey.xml ../osm/mapumental-map.xml.new --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap --user openstreetmap --host $HOST --port 5432 --accept-none
+./generate_xml.py osm.xml ../osm/osm.xml.new --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap --user openstreetmap --host $HOST --port 5432 --accept-none
 
