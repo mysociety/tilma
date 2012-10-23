@@ -3283,7 +3283,7 @@
       </LineSymbolizer>
     </Rule-->
 </Style>
-<Style name="access">
+<Style name="access"><!-- not used -->
      <Rule>
       <Filter>[access] = 'permissive' and ([highway]='unclassified' or [highway]='residential' or [highway]='footway')</Filter>
       &maxscale_zoom15;
@@ -6211,7 +6211,7 @@
       &datasource-settings;
     </Datasource>
 </Layer>
-<Layer name="access-pre_bridges" status="on" srs="&osm2pgsql_projection;">
+<Layer name="access-pre_bridges" status="off" srs="&osm2pgsql_projection;">
     <StyleName>access</StyleName>
     <Datasource>
       <Parameter name="table">
@@ -6262,7 +6262,7 @@
       &datasource-settings;
     </Datasource>
 </Layer>
-<Layer name="bridges_access0" status="on" srs="&osm2pgsql_projection;">
+<Layer name="bridges_access0" status="off" srs="&osm2pgsql_projection;">
     <StyleName>access</StyleName>
     <Datasource>
       <Parameter name="table">
@@ -6315,7 +6315,7 @@
       &datasource-settings;
     </Datasource>
 </Layer>
-<Layer name="bridges_access1" status="on" srs="&osm2pgsql_projection;">
+<Layer name="bridges_access1" status="off" srs="&osm2pgsql_projection;">
     <StyleName>access</StyleName>
     <Datasource>
       <Parameter name="table">
@@ -6368,7 +6368,7 @@
       &datasource-settings;
     </Datasource>
 </Layer>
-<Layer name="bridges_access2" status="on" srs="&osm2pgsql_projection;">
+<Layer name="bridges_access2" status="off" srs="&osm2pgsql_projection;">
     <StyleName>access</StyleName>
     <Datasource>
       <Parameter name="table">
@@ -6421,7 +6421,7 @@
       &datasource-settings;
     </Datasource>
 </Layer>
-<Layer name="bridges_access3" status="on" srs="&osm2pgsql_projection;">
+<Layer name="bridges_access3" status="off" srs="&osm2pgsql_projection;">
     <StyleName>access</StyleName>
     <Datasource>
       <Parameter name="table">
@@ -6474,7 +6474,7 @@
       &datasource-settings;
     </Datasource>
 </Layer>
-<Layer name="bridges_access4" status="on" srs="&osm2pgsql_projection;">
+<Layer name="bridges_access4" status="off" srs="&osm2pgsql_projection;">
     <StyleName>access</StyleName>
     <Datasource>
       <Parameter name="table">
@@ -6527,7 +6527,7 @@
       &datasource-settings;
     </Datasource>
 </Layer>
-<Layer name="bridges_access5" status="on" srs="&osm2pgsql_projection;">
+<Layer name="bridges_access5" status="off" srs="&osm2pgsql_projection;">
     <StyleName>access</StyleName>
     <Datasource>
       <Parameter name="table">
