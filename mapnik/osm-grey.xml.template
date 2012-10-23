@@ -3033,7 +3033,7 @@
       <Filter>[highway] = 'steps'</Filter>
       &maxscale_zoom15;
       <LineSymbolizer>
-        <CssParameter name="stroke">salmon</CssParameter>
+        <CssParameter name="stroke">#999</CssParameter>
         <CssParameter name="stroke-width">5.0</CssParameter>
         <CssParameter name="stroke-dasharray">2,1</CssParameter>
       </LineSymbolizer>
