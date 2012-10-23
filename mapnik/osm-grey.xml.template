@@ -3503,7 +3503,7 @@
         <CssParameter name="stroke-opacity">0.4</CssParameter>
       </LineSymbolizer>
       <LineSymbolizer>
-        <CssParameter name="stroke">#b37700</CssParameter>
+        <CssParameter name="stroke">#999999</CssParameter>
         <CssParameter name="stroke-width">2</CssParameter>
         <CssParameter name="stroke-opacity">0.7</CssParameter>
       </LineSymbolizer>
@@ -3519,7 +3519,7 @@
         <CssParameter name="stroke-opacity">0.4</CssParameter>
       </LineSymbolizer>
       <LineSymbolizer>
-        <CssParameter name="stroke">#a87000</CssParameter>
+        <CssParameter name="stroke">#999999</CssParameter>
         <CssParameter name="stroke-width">1.5</CssParameter>
         <CssParameter name="stroke-dasharray">9,4</CssParameter>
         <CssParameter name="stroke-linejoin">round</CssParameter>
@@ -3617,7 +3617,7 @@
         <CssParameter name="stroke-width">3.5</CssParameter>
       </LineSymbolizer>
       <LineSymbolizer>
-        <CssParameter name="stroke">#b37700</CssParameter>
+        <CssParameter name="stroke">#999999</CssParameter>
         <CssParameter name="stroke-width">2</CssParameter>
         <CssParameter name="stroke-opacity">0.5</CssParameter>
       </LineSymbolizer>
@@ -3637,7 +3637,7 @@
         <CssParameter name="stroke-linecap">round</CssParameter>
       </LineSymbolizer>
       <LineSymbolizer>
-        <CssParameter name="stroke">#a87000</CssParameter>
+        <CssParameter name="stroke">#999999</CssParameter>
         <CssParameter name="stroke-width">1.5</CssParameter>
         <CssParameter name="stroke-dasharray">3,4</CssParameter>
         <CssParameter name="stroke-linejoin">round</CssParameter>
