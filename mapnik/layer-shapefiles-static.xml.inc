@@ -1,3 +1,4 @@
+<!-- Altered to change fill colour -->
 <Style name="necountries">
     <Rule>
       &maxscale_zoom1;

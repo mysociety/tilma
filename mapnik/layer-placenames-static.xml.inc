@@ -1,3 +1,4 @@
+<!-- Altered to have more suburb names -->
 <Style name="continent">
     <Rule>
       <Filter>[place] = 'continent'</Filter>

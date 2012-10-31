@@ -1,3 +1,4 @@
+<!-- Altered fill colour -->
 <Style name="water_areas">
     <Rule>
       <Filter>[natural] = 'glacier'</Filter>

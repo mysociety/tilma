@@ -4,6 +4,9 @@
 <!ENTITY layer-shapefiles-static SYSTEM "layer-shapefiles-static.xml.inc">
 <!ENTITY layer-water-static SYSTEM "layer-water-static.xml.inc">
 <!ENTITY layer-placenames-static SYSTEM "layer-placenames-static.xml.inc">
+<!ENTITY layer-buildings-static SYSTEM "layer-buildings-static.xml.inc">
+<!ENTITY layer-amenity-symbols-static SYSTEM "layer-amenity-symbols-static.xml.inc">
+<!ENTITY layer-amenity-points-static SYSTEM "layer-amenity-points-static.xml.inc">
 %entities;
 ]>
 <!-- This stylesheet uses features only available in mapnik builds with
@@ -6131,7 +6134,7 @@
       &datasource-settings;
     </Datasource>
 </Layer>
-<!-- &layer-buildings; -->
+&layer-buildings-static;
 <Layer name="turning_circle-fill" status="on" srs="&osm2pgsql_projection;">
     <StyleName>turning_circle-fill</StyleName>    
     <Datasource>
@@ -6185,7 +6188,7 @@
       &datasource-settings;
     </Datasource>
 </Layer>
-<!-- &layer-ferry-routes; -->
+&layer-ferry-routes;
 <!-- &layer-aerialways; -->
 <Layer name="roads" status="on" srs="&osm2pgsql_projection;">
     <StyleName>roads</StyleName>
@@ -6577,10 +6580,10 @@
     </Datasource>
 </Layer>
 <!-- &layer-admin; -->
-<!-- &layer-placenames; -->
-<!-- &layer-amenity-stations; -->
-<!-- &layer-amenity-symbols; -->
-<!-- &layer-amenity-points; -->
+&layer-placenames-static;
+&layer-amenity-stations;
+&layer-amenity-symbols-static;
+&layer-amenity-points-static;
 <!-- &layer-power; -->
 <Layer name="planet roads text osm low zoom" status="off" srs="&osm2pgsql_projection;">
      <StyleName>roads-text-low-zoom</StyleName>
@@ -6595,7 +6598,6 @@
       &datasource-settings;
     </Datasource>
 </Layer>
-&layer-placenames-static;
 <Layer name="highway-junctions" status="off" srs="&osm2pgsql_projection;">
     <StyleName>highway-junctions</StyleName>
     <Datasource>
