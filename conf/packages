@@ -1,5 +1,5 @@
 libfcgi-dev
-python-mapnik2
+python-mapnik | python-mapnik2
 python-paste
 tilecache
 cgi-mapserver
