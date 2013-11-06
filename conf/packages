@@ -3,3 +3,4 @@ python-mapnik | python-mapnik2
 python-paste
 tilecache
 cgi-mapserver
+python-flup
