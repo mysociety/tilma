@@ -1,5 +1,7 @@
 *.o
 /conf/general
+/conf/httpd.conf
+/conf/httpd.conf.deployed
 /web/down.html
 /tileserver/tileserver
 
