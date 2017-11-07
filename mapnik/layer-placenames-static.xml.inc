@@ -4,7 +4,7 @@
       <Filter>[place] = 'continent'</Filter>
       &maxscale_zoom1;
       &minscale_zoom2;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="10" fill="#9d6c9d" dy="0" halo_radius="1" wrap_width="20"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="10" fill="#9d6c9d" dy="0" halo-radius="1" wrap-width="20"/>
     </Rule>
 </Style>
 <Style name="country">
@@ -12,13 +12,13 @@
       <Filter>[place] = 'country'</Filter>
       &maxscale_zoom2;
       &minscale_zoom3;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="8" fill="#9d6c9d" dy="0" halo_radius="1" wrap_width="20"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="8" fill="#9d6c9d" dy="0" halo-radius="1" wrap-width="20"/>
     </Rule>
     <Rule>
       <Filter>[place] = 'country'</Filter>
       &maxscale_zoom4;
       &minscale_zoom6;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="10" fill="#9d6c9d" dy="0" halo_radius="1" wrap_width="20"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="10" fill="#9d6c9d" dy="0" halo-radius="1" wrap-width="20"/>
     </Rule>
 </Style>
 <Style name="state">
@@ -26,41 +26,41 @@
       <Filter>[place] = 'state'</Filter>
       &maxscale_zoom4;
       &minscale_zoom4;
-      <TextSymbolizer name="ref" fontset_name="oblique-fonts" size="9" fill="#9d6c9d" dy="0" halo_radius="1" wrap_width="0"/>
+      <TextSymbolizer name="[ref]" fontset-name="oblique-fonts" size="9" fill="#9d6c9d" dy="0" halo-radius="1" wrap-width="0"/>
     </Rule>
     <Rule>
       <Filter>[place] = 'state'</Filter>
       &maxscale_zoom5;
       &minscale_zoom6;
-      <TextSymbolizer name="name" fontset_name="oblique-fonts" size="9" fill="#9d6c9d" dy="0" halo_radius="1" wrap_width="0"/>
+      <TextSymbolizer name="[name]" fontset-name="oblique-fonts" size="9" fill="#9d6c9d" dy="0" halo-radius="1" wrap-width="0"/>
     </Rule>
     <Rule>
       <Filter>[place] = 'state'</Filter>
       &maxscale_zoom7;
       &minscale_zoom8;
-      <TextSymbolizer name="name" fontset_name="oblique-fonts" size="11" fill="#9d6c9d" dy="0" halo_radius="1" wrap_width="0"/>
+      <TextSymbolizer name="[name]" fontset-name="oblique-fonts" size="11" fill="#9d6c9d" dy="0" halo-radius="1" wrap-width="0"/>
     </Rule>
 </Style>
 <Style name="capital">
      <Rule>
       &maxscale_zoom5;
       &minscale_zoom5;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="9" fill="#000" dy="0" halo_radius="1" wrap_width="0"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="9" fill="#000" dy="0" halo-radius="1" wrap-width="0"/>
     </Rule>
     <Rule>
       &maxscale_zoom6;
       &minscale_zoom8;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="11" fill="#000" dy="0" halo_radius="1" wrap_width="0"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="11" fill="#000" dy="0" halo-radius="1" wrap-width="0"/>
     </Rule>
     <Rule>
       &maxscale_zoom9;
       &minscale_zoom10;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="11" fill="#000" dy="0" halo_radius="1" wrap_width="0"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="11" fill="#000" dy="0" halo-radius="1" wrap-width="0"/>
     </Rule>
     <Rule>
       &maxscale_zoom11;
       &minscale_zoom14;
-      <TextSymbolizer name="name" fontset_name="bold-fonts" size="15" fill="#000" dy="0" halo_radius="1" wrap_width="0"/>
+      <TextSymbolizer name="[name]" fontset-name="bold-fonts" size="15" fill="#000" dy="0" halo-radius="1" wrap-width="0"/>
     </Rule>
 </Style>
 <Style name="city">
@@ -68,19 +68,19 @@
       <Filter>[place] = 'city' or [place]='metropolis'</Filter>
       &maxscale_zoom6;
       &minscale_zoom8;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="8" fill="#000" dy="0" halo_radius="1" wrap_width="0"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="8" fill="#000" dy="0" halo-radius="1" wrap-width="0"/>
     </Rule>
     <Rule>
       <Filter>[place] = 'city' or [place]='metropolis'</Filter>
       &maxscale_zoom9;
       &minscale_zoom10;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="11" fill="#000" dy="0" halo_radius="1" wrap_width="0"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="11" fill="#000" dy="0" halo-radius="1" wrap-width="0"/>
     </Rule>
     <Rule>
       <Filter>[place] = 'city' or [place]='metropolis'</Filter>
       &maxscale_zoom11;
       &minscale_zoom14;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="14" fill="#000" dy="0" halo_radius="1" wrap_width="0"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="14" fill="#000" dy="0" halo-radius="1" wrap-width="0"/>
     </Rule>
 </Style>
 <Style name="town">
@@ -88,18 +88,18 @@
       <Filter>[place] = 'town' or [place]='large_town' or [place]='small_town'</Filter>
       &maxscale_zoom9;
       &minscale_zoom10;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="8" fill="#000" halo_radius="1" wrap_width="20"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="8" fill="#000" halo-radius="1" wrap-width="20"/>
     </Rule>
     <Rule>
       <Filter>[place] = 'town' or [place]='large_town' or [place]='small_town'</Filter>
       &maxscale_zoom11;
       &minscale_zoom13;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="11" fill="#000" halo_radius="2" wrap_width="20"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="11" fill="#000" halo-radius="2" wrap-width="20"/>
     </Rule>
     <Rule>
       <Filter>[place] = 'town' or [place]='large_town' or [place]='small_town'</Filter>
       &maxscale_zoom14;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="14" fill="#777777" halo_radius="1" wrap_width="20"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="14" fill="#777777" halo-radius="1" wrap-width="20"/>
     </Rule>
 </Style>
 <Style name="suburb">
@@ -107,12 +107,12 @@
       <Filter>[place] = 'suburb'</Filter>
       &maxscale_zoom11;
       &minscale_zoom13;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="10" fill="#000" halo_radius="1" wrap_width="0"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="10" fill="#000" halo-radius="1" wrap-width="0"/>
     </Rule>
     <Rule>
       <Filter>[place] = 'suburb'</Filter>
       &maxscale_zoom14;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="13" fill="#777777" halo_radius="1" wrap_width="0"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="13" fill="#777777" halo-radius="1" wrap-width="0"/>
     </Rule>
 </Style>
 <Style name="village">
@@ -120,12 +120,12 @@
       <Filter>[place] = 'village' or [place]='large_village'</Filter>
       &maxscale_zoom11;
       &minscale_zoom14;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="9" fill="#000" halo_radius="1" wrap_width="0"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="9" fill="#000" halo-radius="1" wrap-width="0"/>
     </Rule>
     <Rule>
       <Filter>[place] = 'village' or [place]='large_village'</Filter>
       &maxscale_zoom15;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="12" fill="#777777" halo_radius="1" wrap_width="0"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="12" fill="#777777" halo-radius="1" wrap-width="0"/>
     </Rule>
 </Style>
 <Style name="hamlet">
@@ -133,12 +133,12 @@
       <Filter>[place] = 'hamlet' or [place] = 'locality' or [place] = 'isolated_dwelling' or [place] = 'farm'</Filter>
       &maxscale_zoom14;
       &minscale_zoom15;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="8" fill="#000" halo_radius="1" wrap_width="0"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="8" fill="#000" halo-radius="1" wrap-width="0"/>
     </Rule>
     <Rule>
       <Filter>[place] = 'hamlet' or [place] = 'locality' or [place] = 'isolated_dwelling' or [place] = 'farm'</Filter>
       &maxscale_zoom16;
-      <TextSymbolizer name="name" fontset_name="book-fonts" size="11" fill="#777777" halo_radius="1" wrap_width="0"/>
+      <TextSymbolizer name="[name]" fontset-name="book-fonts" size="11" fill="#777777" halo-radius="1" wrap-width="0"/>
     </Rule>
 </Style>
 

@@ -3,9 +3,7 @@
     <Rule>
       <Filter>[railway] = 'station' or [building] = 'station'</Filter>
       &maxscale_zoom10;
-     <PolygonSymbolizer>
-         <CssParameter name="fill">#d4aaaa</CssParameter>
-     </PolygonSymbolizer>
+     <PolygonSymbolizer fill="#d4aaaa"/>
     </Rule>
 </Style>
 
