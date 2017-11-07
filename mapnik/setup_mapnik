@@ -4,7 +4,7 @@
 # 1. Get the external shapefile data for low level things
 
 BASE_DIR="$( cd $(dirname "$0")/../../; pwd)"
-HOST=elephant.ukcod.org.uk
+HOST=pelican.ukcod.org.uk
 
 mkdir -p tmp
 
@@ -14,13 +14,13 @@ then
     wget http://tile.openstreetmap.org/world_boundaries-spherical.tgz
     wget http://tile.openstreetmap.org/processed_p.tar.bz2
     wget http://tile.openstreetmap.org/shoreline_300.tar.bz2
-    wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/10m-populated-places.zip
-    wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/110m-admin-0-boundary-lines.zip
+    wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_populated_places.zip
+    wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_boundary_lines_land.zip
     tar xzf world_boundaries-spherical.tgz
     tar xjf processed_p.tar.bz2 -C world_boundaries
     tar xjf shoreline_300.tar.bz2 -C world_boundaries
-    unzip 10m-populated-places.zip -d world_boundaries
-    unzip 110m-admin-0-boundary-lines.zip -d world_boundaries
+    unzip ne_10m_populated_places.zip -d world_boundaries
+    unzip ne_110m_admin_0_boundary_lines_land.zip -d world_boundaries
     echo "Boundary files unzipped in tmp/world_boundaries"
     cd ..
 fi
@@ -30,7 +30,7 @@ fi
 if [[ "$@" =~ 'mapnik' ]]
 then
     cd tmp
-    svn checkout -r 27279 http://svn.openstreetmap.org/applications/rendering/mapnik
+    svn checkout -r 33762 https://svn.openstreetmap.org/applications/rendering/mapnik
     echo "Mapnik OSM styling in tmp/mapnik"
     cd ..
 fi

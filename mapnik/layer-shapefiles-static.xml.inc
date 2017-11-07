@@ -3,10 +3,7 @@
     <Rule>
       &maxscale_zoom1;
       &minscale_zoom3;
-      <LineSymbolizer>
-        <CssParameter name="stroke">grey</CssParameter>
-        <CssParameter name="stroke-width">0.5</CssParameter>
-      </LineSymbolizer>
+      <LineSymbolizer stroke="grey" stroke-width="0.5"/>
     </Rule>
 </Style>
 <Style name="nepopulated">
@@ -14,24 +11,20 @@
       &maxscale_zoom3;
       &minscale_zoom4;
      <Filter>[SCALERANK]=1</Filter>
-     <TextSymbolizer name="NAMEASCII" fontset_name="book-fonts" size="8" dy="2" fill="grey" halo_radius="1" />
+     <TextSymbolizer fontset-name="book-fonts" size="8" dy="2" fill="grey" halo-radius="1">[NAMEASCII]</TextSymbolizer>
     </Rule>
 </Style>
 <Style name="world">
     <Rule>
       &maxscale_zoom0;
       &minscale_zoom9;
-      <PolygonSymbolizer>
-        <CssParameter name="fill">#eae8dd</CssParameter>
-      </PolygonSymbolizer>
+      <PolygonSymbolizer fill="#eae8dd"/>
     </Rule>
 </Style>
 <Style name="coast-poly">
     <Rule>
       &maxscale_zoom10;
-      <PolygonSymbolizer>
-        <CssParameter name="fill">#eae8dd</CssParameter>
-      </PolygonSymbolizer>
+      <PolygonSymbolizer fill="#eae8dd"/>
     </Rule>
 </Style>
   <!-- BUILTUP VMAP0 -->
@@ -39,9 +32,7 @@
     <Rule>
       &maxscale_zoom8;
       &minscale_zoom10;
-      <PolygonSymbolizer>
-        <CssParameter name="fill">#ddd</CssParameter>
-      </PolygonSymbolizer>
+      <PolygonSymbolizer fill="#ddd"/>
     </Rule>
 </Style>
 <Layer name="world" status="on" srs="&srs900913;">
@@ -69,7 +60,7 @@
     <StyleName>necountries</StyleName>
     <Datasource>
       <Parameter name="type">shape</Parameter>
-      <Parameter name="file">&world_boundaries;/110m_admin_0_boundary_lines_land.shp</Parameter>
+      <Parameter name="file">&world_boundaries;/ne_110m_admin_0_boundary_lines_land.shp</Parameter>
     </Datasource>
 </Layer>
 <Layer name="nepopulated" status="on" srs="&srs4326;">

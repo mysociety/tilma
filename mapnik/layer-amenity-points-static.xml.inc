@@ -14,7 +14,7 @@
     <Rule>
       &maxscale_zoom15;
       <Filter>[amenity]='bus_station'</Filter>
-      <PointSymbolizer file="&symbols;/bus_station.n.16.png" allow_overlap="false"/>
+      <PointSymbolizer file="&symbols;/bus_station.n.16.png" allow-overlap="false"/>
     </Rule>
 </Style>
 
