@@ -1,9 +1,9 @@
-*.o
 /conf/general
 /conf/httpd.conf
 /conf/httpd.conf.deployed
 /web/down.html
-/tileserver/tileserver
+
+/web/mapserv.fcgi
 
 /mapnik/osm-grey.xml
 /mapnik/osm-names.xml
