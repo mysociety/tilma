@@ -6,4 +6,6 @@
 /web/mapserv.fcgi
 
 /mapnik/osm-grey.xml
+/mapnik/osm-grey-print.xml
 /mapnik/osm-names.xml
+/mapnik/osm-names-print.xml

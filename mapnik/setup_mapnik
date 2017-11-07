@@ -45,10 +45,12 @@ then
     cd $BASE_DIR/mapnik
     sed "s,%(mysociety_path)s,$BASE_DIR," < $MYSOCIETY_DIR/osm-names.xml.template > $MYSOCIETY_DIR/osm-names.xml
     sed "s,%(mysociety_path)s,$BASE_DIR," < $MYSOCIETY_DIR/osm-grey.xml.template > $MYSOCIETY_DIR/osm-grey.xml
+    sed "s,%(mysociety_path)s,$BASE_DIR," < $MYSOCIETY_DIR/osm-names-print.xml.template > $MYSOCIETY_DIR/osm-names-print.xml
+    sed "s,%(mysociety_path)s,$BASE_DIR," < $MYSOCIETY_DIR/osm-grey-print.xml.template > $MYSOCIETY_DIR/osm-grey-print.xml
     ./generate_xml.py $MYSOCIETY_DIR/osm-names.xml $DIR/mapumental-names.xml --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap --user openstreetmap --host $HOST --port 5432 --accept-none
     ./generate_xml.py $MYSOCIETY_DIR/osm-grey.xml $DIR/mapumental-map.xml --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap --user openstreetmap --host $HOST --port 5432 --accept-none
-    ./generate_xml.py osm.xml $DIR/osm.xml --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap --user openstreetmap --host $HOST --port 5432 --accept-none
+    ./generate_xml.py $MYSOCIETY_DIR/osm-names-print.xml $DIR/mapumental-names-print.xml --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap --user openstreetmap --host $HOST --port 5432 --accept-none
+    ./generate_xml.py $MYSOCIETY_DIR/osm-grey-print.xml $DIR/mapumental-map-print.xml --world_boundaries $BASE_DIR/world_boundaries --symbols $BASE_DIR/mapnik/symbols --dbname openstreetmap --user openstreetmap --host $HOST --port 5432 --accept-none
     echo "New XML files present in tmp/"
     cd $DIR/..
 fi
-
