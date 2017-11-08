@@ -1,5 +1,7 @@
-python-mapnik | python-mapnik2
+python-mapnik
 python-paste
 tilecache
 cgi-mapserver
 python-flup
+unifont
+fonts-dejavu
