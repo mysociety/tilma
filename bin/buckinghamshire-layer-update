@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+source /data/mysociety/shlib/deployfns
+read_conf "$(dirname "$0")/../conf/general.yml"
+
+TMPDIR=$(mktemp -d) || exit 1
+trap 'rm -rf "$TMPDIR"' EXIT
+cd $TMPDIR
+
+curl -s -O -u $OPTION_buckinghamshire__username:$OPTION_buckinghamshire__password \
+    "sftp://$OPTION_buckinghamshire__host$OPTION_buckinghamshire__dir/WholeStreetAsset.{dat,id,map,TAB}"
+mv WholeStreetAsset.* $OPTION_buckinghamshire__out

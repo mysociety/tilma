@@ -1,0 +1,6 @@
+buckinghamshire:
+    host: host
+    username: username
+    password: password
+    dir: /dir
+    out: /data/vhost/layers/
