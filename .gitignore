@@ -1,5 +1,7 @@
 /conf/general.yml
 /conf/general.yml.deployed
+/conf/crontab
+/conf/crontab.deployed
 /conf/httpd.conf
 /conf/httpd.conf.deployed
 /web/down.html
