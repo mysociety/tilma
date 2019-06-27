@@ -4,6 +4,8 @@
 /conf/crontab.deployed
 /conf/httpd.conf
 /conf/httpd.conf.deployed
+/conf/proxy.config
+/conf/proxy.config.deployed
 /web/down.html
 
 /web/mapserv.fcgi

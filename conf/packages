@@ -5,3 +5,4 @@ cgi-mapserver
 python-flup
 unifont
 fonts-dejavu
+php-sqlite3
