@@ -2005,7 +2005,7 @@ class RateMeter
 
         $this->ip = $_SERVER['REMOTE_ADDR'];
 
-        $this->dbname = 'proxy.sqlite'; // This string may need to come config
+        $this->dbname = dirname(__FILE__) . '/../../../proxy.sqlite'; // This string may need to come config
 
         $this->getRateMeterDatabase();
 
@@ -2642,7 +2642,7 @@ class ProxyConfig {
     {
         try {
 
-            $c = file_get_contents("proxy.config");
+            $c = file_get_contents(dirname(__FILE__) . "/../../conf/proxy.config");
 
             $configJson = json_decode($c, true);
 
@@ -2752,7 +2752,7 @@ class XmlParser
 
     function __construct($f = "proxy.config")
     {
-        if(trim($f) != "") { $this->loadFile($f);}
+        if(trim($f) != "") { $this->loadFile(dirname(__FILE__) . "/../../conf/$f");}
     }
 
     function loadFile($f)
