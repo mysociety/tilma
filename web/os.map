@@ -67,7 +67,7 @@ MAP
       "init=epsg:27700"
     END
     NAME   "bromley_playgrounds"
-    DATA   /data/vhost/tilma.mysociety.org/bromley/PlayGrounds
+    DATA   /data/vhost/tilma.mysociety.org/layers/bromley/PlayGrounds
     STATUS       ON
     TYPE         POLYGON
     CLASS
@@ -85,7 +85,7 @@ MAP
       "init=epsg:27700"
     END
     NAME   "bromley_trees"
-    DATA   /data/vhost/tilma.mysociety.org/bromley/Trees
+    DATA   /data/vhost/tilma.mysociety.org/layers/bromley/Trees
     STATUS       ON
     TYPE         POLYGON
     CLASS
