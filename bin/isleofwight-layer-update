@@ -1,0 +1,91 @@
+#!/bin/bash
+
+set -e
+
+source /data/mysociety/shlib/deployfns
+read_conf "$(dirname "$0")/../conf/general.yml"
+
+TMPDIR=$(mktemp -d) || exit 1
+trap 'rm -rf "$TMPDIR"' EXIT
+cd $TMPDIR
+
+IFS=$'\n'
+LAYERS="
+Anti-Skid
+Bollards
+Car Park Tariff Boards
+Car Parks
+Carriageways
+Central Reservation
+Channels
+Cuttings and Embankments
+Detector Loop
+Drain-Culverts
+Drain-Ditches
+Drain-Grips
+Drain-Gullys
+Drain-Manholes
+FWay Verge-Footpath to Bridges
+Fence Gate Wall Barrier Rail
+Footpaths & Bridleways
+Footways
+Fords
+Furn-Bins
+Furn-Boxes and Planters
+Furn-Cycle Stands
+Furn-Cycleway Gates
+Furn-Grid and Stones
+Furn-Parking Meters
+Furn-Seats and Benches
+Furn-Shelters
+Kerbs-Edging
+Kerbs-Kassel
+Kerbs
+Pedestrian Barriers
+Road Studs
+SL- Pelican X
+SL - Advisory 20mph
+SL - Bus Shelter
+SL - Diagrams
+SL - Festoon
+SL - Floodlight
+SL - Lantern
+SL - Meter Point
+SL - Pillar
+SL - Refuge
+SL - School
+SL - Speed Indicator (Sid-Sr)
+SL - Street Light
+SL - Subway
+SL - Tr Sign(E)
+SL - Tr Sign(I)
+SL - Tr Signal
+SL - Uplighter
+SL - Wig Wag Light
+SL - Zebra X
+Safety Fences
+Sign Posts
+Signs
+Sleepers
+Steps
+Street Nameplates
+Structures-Bridges
+Structures-Retaining Walls
+Traffic Light Poles
+Trees
+Vegetation-Hedges
+Verges-Natural
+"
+
+for layer in $LAYERS; do
+curl -s -O -u $OPTION_isleofwight__username:$OPTION_isleofwight__password \
+    "sftp://$OPTION_isleofwight__host$OPTION_isleofwight__dir/$layer.{dat,id,map,tab}"
+    sleep 1
+done;
+
+rename 's/ /_/g' *
+
+curl -s -O -u $OPTION_isleofwight__username:$OPTION_isleofwight__password \
+  "sftp://$OPTION_isleofwight__host$OPTION_isleofwight__streetdir/Streets.{dat,id,map,tab}"
+
+mv *.{dat,id,map,tab} $OPTION_isleofwight__out
