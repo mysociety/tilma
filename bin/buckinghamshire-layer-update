@@ -11,4 +11,6 @@ cd $TMPDIR
 
 curl -s -O -u $OPTION_buckinghamshire__username:$OPTION_buckinghamshire__password \
     "sftp://$OPTION_buckinghamshire__host$OPTION_buckinghamshire__dir/WholeStreetAsset.{dat,id,map,TAB}"
+curl -s -O -u $OPTION_buckinghamshire__username:$OPTION_buckinghamshire__password \
+    "sftp://$OPTION_buckinghamshire__host$OPTION_buckinghamshire__dir/HWGullyAsset.{dat,id,map,TAB}"
 mv WholeStreetAsset.* $OPTION_buckinghamshire__out
