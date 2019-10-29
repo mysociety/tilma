@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+source /data/mysociety/shlib/deployfns
+read_conf "$(dirname "$0")/../conf/general.yml"
+
+TMPDIR=$(mktemp -d) || exit 1
+trap 'rm -rf "$TMPDIR"' EXIT
+cd $TMPDIR
+
+curl -sS -O -u "$OPTION_peterborough__username:$OPTION_peterborough__password" \
+    "sftp://${OPTION_peterborough__host}${OPTION_peterborough__dir}/trees_invent.zip"
+unzip trees_invent.zip
+
+# Check we are dealing with valid shapefiles.
+for f in tree_groups_invent trees_invent; do
+    if ! ogrinfo -ro -so "${f}.shp" &> /dev/null ; then
+        echo "Invalid shapefile detected, aborting to prevent bad data" 1>&2
+        exit 1
+    fi
+done
+
+mv -v ./*.{dbf,prj,shp,shx} "$OPTION_peterborough__out"
