@@ -9,7 +9,7 @@ TMPDIR=$(mktemp -d) || exit 1
 trap 'rm -rf "$TMPDIR"' EXIT
 cd $TMPDIR
 
-curl -sS -O -u "$OPTION_peterborough__username:$OPTION_peterborough__password" \
+curl -k -sS -O -u "$OPTION_peterborough__username:$OPTION_peterborough__password" \
     "sftp://${OPTION_peterborough__host}${OPTION_peterborough__dir}/trees_invent.zip"
 unzip trees_invent.zip
 
