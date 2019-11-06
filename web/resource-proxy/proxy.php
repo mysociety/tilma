@@ -1279,6 +1279,18 @@ class Proxy {
         return false;
     }
 
+    public function isHardCodedToken()
+    {
+
+        if (isset ( $this->resource['token'])) {
+
+            return true;
+
+        }
+
+        return false;
+    }
+
     public function exchangePortalTokenForServerToken($portalToken) {
 
         $this->proxyLog->log("Exchanging portal token for server-specific token for " . $this->resource['url']);
@@ -1312,7 +1324,9 @@ class Proxy {
 
         $isAppLogin = $this->isAppLogin();
 
-        if ($isUserLogin || $isAppLogin) {
+        $isHardCodedToken = $this->isHardCodedToken();
+
+        if ($isUserLogin || $isAppLogin || $isHardCodedToken) {
 
             if ($isAppLogin) {
 
@@ -1321,6 +1335,9 @@ class Proxy {
             } else if($isUserLogin) {
 
                 $token = $this->doUserPasswordLogin();
+            } else if($isHardCodedToken) {
+
+                $token = $this->resource['token'];
             }
 
         }else{
