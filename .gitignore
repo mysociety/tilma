@@ -6,6 +6,8 @@
 /conf/httpd.conf.deployed
 /conf/proxy.config
 /conf/proxy.config.deployed
+/conf/streetmanager
+/conf/streetmanager.deployed
 /web/down.html
 
 /web/mapserv.fcgi
