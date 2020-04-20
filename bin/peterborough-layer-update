@@ -11,7 +11,7 @@ cd $TMPDIR
 
 curl -sS -O -u "$OPTION_peterborough__username:$OPTION_peterborough__password" \
     "sftp://${OPTION_peterborough__host}${OPTION_peterborough__dir}/trees_invent.zip"
-unzip trees_invent.zip
+unzip -q trees_invent.zip
 
 # Check we are dealing with valid shapefiles.
 for f in tree_groups_invent trees_invent; do
@@ -21,4 +21,4 @@ for f in tree_groups_invent trees_invent; do
     fi
 done
 
-mv -v ./*.{dbf,prj,shp,shx} "$OPTION_peterborough__out"
+mv ./*.{dbf,prj,shp,shx} "$OPTION_peterborough__out"
