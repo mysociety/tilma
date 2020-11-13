@@ -92,8 +92,12 @@ $params = [
 ];
 
 $data = $api->call('geojson/works', 'GET', $params);
+$features = [];
 foreach ($data->features as $feature) {
     $props = $feature->properties;
+    if (in_array($props->permit_status, ['closed', 'cancelled', 'revoked', 'refused'])) {
+        continue;
+    }
     # Would be nice to have description here for summary
     $tm = str_replace('_', ' ', $props->traffic_management_type);
     $category = ucfirst(str_replace('_', ' ', $props->work_category));
@@ -105,24 +109,32 @@ foreach ($data->features as $feature) {
         'summary' => "$category works, with $tm",
         'promoter' => ucwords(strtolower($props->promoter_organisation)),
     ];
+    $features[] = $feature;
 }
 
 $data2 = $api->call('geojson/activities', 'GET', $params);
 foreach ($data2->features as $feature) {
     $props = $feature->properties;
+    if ($props->activity_type == 'section58' || $props->cancelled) {
+        continue;
+    }
     $feature->properties = [
         'work_ref' => $props->activity_reference_number,
         'start_date' => $props->start_date,
         'end_date' => $props->end_date,
-        'summary' => $props->activity_location_description,
+        'summary' => $props->activity_name,
+        'description' => $props->activity_location_description,
     ];
+    $features[] = $feature;
 }
-$data->features = array_merge($data->features, $data2->features);
 
 if ($forward_plans) {
     $data3 = $api->call('geojson/forward-plans', 'GET', $params);
     foreach ($data3->features as $feature) {
         $props = $feature->properties;
+        if ($props->forward_plan_status == 'cancelled') {
+            continue;
+        }
         $feature->properties = [
             'work_ref' => $props->work_reference_number,
             'start_date' => $props->start_date,
@@ -131,8 +143,9 @@ if ($forward_plans) {
             'description' => $props->description_of_work,
             'promoter' => $props->promoter_organisation,
         ];
+        $features[] = $feature;
     }
-    $data->features = array_merge($data->features, $data3->features);
 }
 
+$data->features = $features;
 print json_encode($data);
