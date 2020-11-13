@@ -99,6 +99,7 @@ foreach ($data->features as $feature) {
     $category = ucfirst(str_replace('_', ' ', $props->work_category));
     if ($category == 'Paa') $category = 'Major';
     $feature->properties = [
+        'work_ref' => $props->work_reference_number,
         'start_date' => $props->start_date,
         'end_date' => $props->end_date,
         'summary' => "$category works, with $tm",
@@ -110,6 +111,7 @@ $data2 = $api->call('geojson/activities', 'GET', $params);
 foreach ($data2->features as $feature) {
     $props = $feature->properties;
     $feature->properties = [
+        'work_ref' => $props->activity_reference_number,
         'start_date' => $props->start_date,
         'end_date' => $props->end_date,
         'summary' => $props->activity_location_description,
@@ -122,6 +124,7 @@ if ($forward_plans) {
     foreach ($data3->features as $feature) {
         $props = $feature->properties;
         $feature->properties = [
+            'work_ref' => $props->work_reference_number,
             'start_date' => $props->start_date,
             'end_date' => $props->end_date,
             'summary' => $props->location_description,
