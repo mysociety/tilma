@@ -81,6 +81,7 @@ $start_date = get('start_date', '\d\d\d\d-\d\d-\d\d', date('Y-m-d'));
 $default_end_date = date('Y-m-d', time()+86400*13*7);
 $end_date = get('end_date', '\d\d\d\d-\d\d-\d\d', $default_end_date);
 $forward_plans = get('forward_plans', '[01]', 1);
+$points = get('points', '[01]', 0);
 
 $params = [
     'minEasting' => $bbox[0],
@@ -109,6 +110,9 @@ foreach ($data->features as $feature) {
         'summary' => "$category works, with $tm",
         'promoter' => ucwords(strtolower($props->promoter_organisation)),
     ];
+    if ($points) {
+        $feature->geometry = $props->work_centre_point;
+    }
     $features[] = $feature;
 }
 
@@ -125,6 +129,9 @@ foreach ($data2->features as $feature) {
         'summary' => $props->activity_name,
         'description' => $props->activity_location_description,
     ];
+    if ($points) {
+        $feature->geometry = $props->activity_centre_point;
+    }
     $features[] = $feature;
 }
 
@@ -143,6 +150,9 @@ if ($forward_plans) {
             'description' => $props->description_of_work,
             'promoter' => $props->promoter_organisation,
         ];
+        if ($points) {
+            $feature->geometry = $props->work_centre_point;
+        }
         $features[] = $feature;
     }
 }
