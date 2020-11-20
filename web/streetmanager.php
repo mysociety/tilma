@@ -108,7 +108,7 @@ foreach ($data->features as $feature) {
         'start_date' => $props->start_date,
         'end_date' => $props->end_date,
         'summary' => "$category works, with $tm",
-        'promoter' => ucwords(strtolower($props->promoter_organisation)),
+        'promoter' => prettify_text($props->promoter_organisation),
     ];
     if ($points) {
         $feature->geometry = $props->work_centre_point;
@@ -159,3 +159,12 @@ if ($forward_plans) {
 
 $data->features = $features;
 print json_encode($data);
+
+function prettify_text($text) {
+    $text = ucwords(strtolower($text));
+    $text = str_replace('Of ', 'of ', $text);
+    $text = preg_replace('#\bBt\b#', 'BT', $text);
+    $text = preg_replace('#\bUk\b#', 'UK', $text);
+    $text = preg_replace('#\btfl\b#i', 'TfL', $text);
+    return $text;
+}
