@@ -102,6 +102,7 @@ foreach ($data->features as $feature) {
     # Would be nice to have description here for summary
     $tm = str_replace('_', ' ', $props->traffic_management_type);
     $category = ucfirst(str_replace('_', ' ', $props->work_category));
+    $category = str_replace('Hs2', 'HS2', $category);
     if ($category == 'Paa') $category = 'Major';
     $feature->properties = [
         'work_ref' => $props->work_reference_number,
@@ -166,5 +167,6 @@ function prettify_text($text) {
     $text = preg_replace('#\bBt\b#', 'BT', $text);
     $text = preg_replace('#\bUk\b#', 'UK', $text);
     $text = preg_replace('#\btfl\b#i', 'TfL', $text);
+    $text = preg_replace('#\bHs2\b#i', 'HS2', $text);
     return $text;
 }
