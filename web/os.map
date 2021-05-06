@@ -58,41 +58,5 @@ MAP
     TYPE         RASTER
     PROCESSING "RESAMPLE=AVERAGE"
   END # layer
-
-  LAYER
-    METADATA
-      wms_title 'Bromley playgrounds'
-    END
-    PROJECTION
-      "init=epsg:27700"
-    END
-    NAME   "bromley_playgrounds"
-    DATA   /data/vhost/tilma.mysociety.org/layers/bromley/PlayGrounds
-    STATUS       ON
-    TYPE         POLYGON
-    CLASS
-        NAME "Bromley playgrounds"
-        COLOR 100 0 0
-    END
-    PROCESSING "RESAMPLE=AVERAGE"
-  END # layer
-
-  LAYER
-    METADATA
-      wms_title 'Bromley trees'
-    END
-    PROJECTION
-      "init=epsg:27700"
-    END
-    NAME   "bromley_trees"
-    DATA   /data/vhost/tilma.mysociety.org/layers/bromley/Trees
-    STATUS       ON
-    TYPE         POLYGON
-    CLASS
-        NAME "Bromley trees"
-        COLOR 0 100 0
-    END
-    PROCESSING "RESAMPLE=AVERAGE"
-  END
 END
 

@@ -6,13 +6,10 @@ AddHandler fcgid-script .fcgi
     ExpiresActive On
     ExpiresDefault "access plus 1 week"
 </Location>
-<Location ~ "bromley">
-    ExpiresActive Off
-</Location>
 
 # Prevent errors from favicon.ico
 RewriteEngine on
 RewriteRule /favicon.ico / [F]
 
-RewriteRule ^/(osm|sv|vmd|mapumental-map|mapumental-names|mapumental-map-print|mapumental-names-print|bromley)/(.*)  /tilecache.fcgi/1.0.0/$1/$2
+RewriteRule ^/(osm|sv|vmd|mapumental-map|mapumental-names|mapumental-map-print|mapumental-names-print)/(.*)  /tilecache.fcgi/1.0.0/$1/$2
 
