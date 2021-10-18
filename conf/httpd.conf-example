@@ -11,5 +11,5 @@ AddHandler fcgid-script .fcgi
 RewriteEngine on
 RewriteRule /favicon.ico / [F]
 
-RewriteRule ^/(osm|sv|vmd|mapumental-map|mapumental-names|mapumental-map-print|mapumental-names-print)/(.*)  /tilecache.fcgi/1.0.0/$1/$2
+RewriteRule ^/(osm|vmd|mapumental-map|mapumental-names|mapumental-map-print|mapumental-names-print)/(.*)  /tilecache.fcgi/1.0.0/$1/$2
 
