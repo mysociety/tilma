@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+source /data/mysociety/shlib/deployfns
+read_conf "$(dirname "$0")/../conf/general.yml"
+
+TMPDIR=$(mktemp -d) || exit 1
+trap 'rm -rf "$TMPDIR"' EXIT
+cd $TMPDIR
+
+curl -sS -O -u "$OPTION_hampshire__username:$OPTION_hampshire__password" \
+    "sftp://${OPTION_hampshire__host}${OPTION_hampshire__dir}/Road_Section_Export.{cpg,dbf,idx,shp,shx}"
+
+mv ./*.{cpg,dbf,idx,shp,shx} "$OPTION_hampshire__out"
