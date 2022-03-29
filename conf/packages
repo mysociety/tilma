@@ -6,3 +6,5 @@ python-flup
 unifont
 fonts-dejavu
 php-sqlite3
+php-xml
+php-curl
