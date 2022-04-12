@@ -8,3 +8,4 @@ fonts-dejavu
 php-sqlite3
 php-xml
 php-curl
+php-memcache
