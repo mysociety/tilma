@@ -2,6 +2,8 @@
 
 require_once dirname(__FILE__) . '/../conf/streetmanager';
 
+define('EMPTY_RESULT', '{"type":"FeatureCollection","features":[]}');
+
 class Api {
     private $base;
     private $token;
@@ -54,6 +56,14 @@ class Api {
         curl_close($ch);
         return json_decode($output);
     }
+
+    public function call_no_error($url, $method, $data) {
+        $output = $this->call($url, $method, $data);
+        if (property_exists($output, 'error')) {
+            return json_decode(EMPTY_RESULT);
+        }
+        return $output;
+    }
 }
 
 # ---
@@ -72,7 +82,7 @@ function get($id, $regex, $default = null) {
 
 $bbox = get('bbox', '[\d.]+,[\d.]+,[\d.]+,[\d.]+');
 if (!$bbox) {
-    print '{"type":"FeatureCollection","features":[]}';
+    print EMPTY_RESULT;
     exit;
 }
 $bbox = explode(',', $bbox);
@@ -92,7 +102,7 @@ $params = [
     'end_date' => $end_date,
 ];
 
-$data = $api->call('geojson/works', 'GET', $params);
+$data = $api->call_no_error('geojson/works', 'GET', $params);
 $features = [];
 foreach ($data->features as $feature) {
     $props = $feature->properties;
@@ -117,7 +127,7 @@ foreach ($data->features as $feature) {
     $features[] = $feature;
 }
 
-$data2 = $api->call('geojson/activities', 'GET', $params);
+$data2 = $api->call_no_error('geojson/activities', 'GET', $params);
 foreach ($data2->features as $feature) {
     $props = $feature->properties;
     if ($props->activity_type == 'section58' || $props->cancelled) {
@@ -137,7 +147,7 @@ foreach ($data2->features as $feature) {
 }
 
 if ($forward_plans) {
-    $data3 = $api->call('geojson/forward-plans', 'GET', $params);
+    $data3 = $api->call_no_error('geojson/forward-plans', 'GET', $params);
     foreach ($data3->features as $feature) {
         $props = $feature->properties;
         if ($props->forward_plan_status == 'cancelled') {
