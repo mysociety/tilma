@@ -26,3 +26,10 @@ hampshire:
     password: password
     dir: /dir
     out: /data/vhost/layers
+
+lincolnshire:
+    host: host
+    username: username
+    password: password
+    dir: /dir
+    out: /data/vhost/layers

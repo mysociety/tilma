@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -e
+
+source /data/mysociety/shlib/deployfns
+read_conf "$(dirname "$0")/../conf/general.yml"
+
+# Ensure that the SSH keys for the SFTP server have been accepted
+[ -e ~/.ssh/known_hosts ] || install -D -m 0644 /dev/null ~/.ssh/known_hosts
+grep $OPTION_lincolnshire__host ~/.ssh/known_hosts >/dev/null || ssh-keyscan $OPTION_lincolnshire__host >> ~/.ssh/known_hosts
+
+TMPDIR=$(mktemp -d) || exit 1
+trap 'rm -rf "$TMPDIR"' EXIT
+cd $TMPDIR
+
+IFS=$'\n'
+LAYERS="
+Carriageway/Carriageway
+Drainage/LCC_Drainage-GulliesOffletsManholes
+Public Transport Stops/Public_Transport_Stops
+SL_Bollards - SLLB/SL_Bollards
+SL_Street_Light_Units - SLLU/SL_Street_Light_Units
+SL_Lit_Signs - SLLG/SL_Lit_Signs
+Safety Barriers/Safety_Barriers
+Structures/ST_All_Structures
+"
+
+for layer in $LAYERS; do
+curl -s -O -u $OPTION_lincolnshire__username:$OPTION_lincolnshire__password \
+    "sftp://$OPTION_lincolnshire__host$OPTION_lincolnshire__dir/$layer.{DAT,ID,IND,MAP,TAB}"
+    sleep 1
+done;
+
+mv *.{DAT,ID,IND,MAP,TAB} $OPTION_lincolnshire__out
