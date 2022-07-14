@@ -19,4 +19,4 @@ curl -s -O -u $OPTION_buckinghamshire__username:$OPTION_buckinghamshire__passwor
     "sftp://$OPTION_buckinghamshire__host$OPTION_buckinghamshire__dir/HWGullyAsset.{dat,id,map,TAB}"
 curl -s -O -u $OPTION_buckinghamshire__username:$OPTION_buckinghamshire__password \
     "sftp://$OPTION_buckinghamshire__host$OPTION_buckinghamshire__dir/HWLightingAsset.{dat,id,map,TAB}"
-mv WholeStreetAsset.* $OPTION_buckinghamshire__out
+mv ./*.{dat,id,map,TAB} $OPTION_buckinghamshire__out
