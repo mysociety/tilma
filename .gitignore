@@ -8,6 +8,8 @@
 /conf/proxy.config.deployed
 /conf/streetmanager
 /conf/streetmanager.deployed
+/conf/mayrise
+/conf/mayrise.deployed
 /web/down.html
 
 /web/mapserv.fcgi

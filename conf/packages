@@ -6,5 +6,6 @@ unifont
 fonts-dejavu
 php-sqlite3
 php-xml
+php-soap
 php-curl
 php-memcache
