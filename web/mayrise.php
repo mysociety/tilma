@@ -4,9 +4,19 @@ require_once dirname(__FILE__) . '/../conf/mayrise';
 require_once dirname(__FILE__) . '/fns.php';
 
 $bbox = get_bbox();
+$type = get('type', '[MX]', 'M');
 $result = fetch_data($bbox);
 
 foreach ($result as $feature) {
+    if ($type == 'M' && ($feature->UnitTypeCode == 'X' || !in_array($feature->OwnershipCode, ['LBM', 'LBMH', 'LBML', 'LBMP', 'LBMW']))) {
+        continue;
+    }
+    if ($type == 'X' && $feature->UnitTypeCode != 'X') {
+        continue;
+    }
+    if (!$feature->FaultMaintenanceSupport) {
+        continue;
+    }
     $features[] = data_as_geojson($feature);
 }
 
