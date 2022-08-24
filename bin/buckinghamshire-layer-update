@@ -13,10 +13,18 @@ TMPDIR=$(mktemp -d) || exit 1
 trap 'rm -rf "$TMPDIR"' EXIT
 cd $TMPDIR
 
-curl -s -O -u $OPTION_buckinghamshire__username:$OPTION_buckinghamshire__password \
-    "sftp://$OPTION_buckinghamshire__host$OPTION_buckinghamshire__dir/WholeStreetAsset.{dat,id,map,TAB}"
-curl -s -O -u $OPTION_buckinghamshire__username:$OPTION_buckinghamshire__password \
-    "sftp://$OPTION_buckinghamshire__host$OPTION_buckinghamshire__dir/HWGullyAsset.{dat,id,map,TAB}"
-curl -s -O -u $OPTION_buckinghamshire__username:$OPTION_buckinghamshire__password \
-    "sftp://$OPTION_buckinghamshire__host$OPTION_buckinghamshire__dir/HWLightingAsset.{dat,id,map,TAB}"
-mv ./*.{dat,id,map,TAB} $OPTION_buckinghamshire__out
+# Set IFS to newline in case any layer has spaces in its name
+IFS=$'\n'
+LAYERS="
+WholeStreetAsset
+HWGullyAsset
+HWLightingAsset
+"
+
+for layer in $LAYERS; do
+    curl -s -O -u $OPTION_buckinghamshire__username:$OPTION_buckinghamshire__password \
+    "sftp://$OPTION_buckinghamshire__host$OPTION_buckinghamshire__dir/$layer.{dat,id,map,TAB}"
+    ogr2ogr -where "feature_end_date = '3000/01/01'" ${layer}Live.tab ${layer}.TAB
+done
+
+mv ./*.{dat,id,map,TAB,tab} $OPTION_buckinghamshire__out
