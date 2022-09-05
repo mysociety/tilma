@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -e
+
+source /data/mysociety/shlib/deployfns
+read_conf "$(dirname "$0")/../conf/general.yml"
+
+TMPDIR=$(mktemp -d) || exit 1
+trap 'rm -rf "$TMPDIR"' EXIT
+cd $TMPDIR
+
+declare -A types=(
+    ["ILUM"]='Iluminated_signs'
+    ["LAMP"]='Street_lights'
+    ["PLMP"]='Parish_Street_lights'
+)
+
+for type in "${!types[@]}"; do
+    curl -s -o $type.xml 'https://gis.shropshire.gov.uk/arcgis/services/AGOL/FMSfeeds/MapServer/WFSServer?service=WFS&request=GetFeature&typename=AGOL_FMSfeeds:'${types[$type]}
+    ogr2ogr -f GPKG -t_srs EPSG:4326 -nln $type $type.{gpkg,xml}
+    perl -e'
+    $f = join("", <>);
+    $f =~ s{(<ElementPath>(?:ASSET_ID|SITE_CODE)</ElementPath>\s+<Type>)Integer(</Type>)}{\1String\2};
+    print $f
+    ' $type.gfs > tmp.gfs
+    ogr2ogr -f GPKG -t_srs EPSG:4326 -nln $type -oo GFS_TEMPLATE=tmp.gfs $type.{gpkg,xml}
+done
+
+ogrinfo -q LAMP.gpkg -sql "ALTER TABLE LAMP ADD COLUMN OWNER TEXT"
+ogrinfo -q PLMP.gpkg -sql "ALTER TABLE PLMP ADD COLUMN PART_NIGHT TEXT"
+
+mv *.gpkg $OPTION_shropshire__out
