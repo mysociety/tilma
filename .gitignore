@@ -10,6 +10,8 @@
 /conf/streetmanager.deployed
 /conf/mayrise
 /conf/mayrise.deployed
+/conf/alloy
+/conf/alloy.deployed
 /web/down.html
 
 /web/mapserv.fcgi
