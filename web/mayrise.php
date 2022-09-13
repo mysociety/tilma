@@ -1,13 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/../conf/mayrise';
-
-$features = [];
-$geojson = [ "type" => "FeatureCollection", "features" => &$features ];
-
-define('EMPTY_RESULT', json_encode($geojson));
-
-header('Content-Type: application/json');
+require_once dirname(__FILE__) . '/fns.php';
 
 $bbox = get_bbox();
 $result = fetch_data($bbox);
@@ -42,22 +36,4 @@ function fetch_data($bbox) {
         exit;
     }
     return $result;
-}
-
-function get_bbox() {
-    $bbox = get('bbox', '[\d.]+,[\d.]+,[\d.]+,[\d.]+');
-    if (!$bbox) {
-        print EMPTY_RESULT;
-        exit;
-    }
-    $bbox = explode(',', $bbox);
-    return $bbox;
-}
-
-function get($id, $regex, $default = null) {
-    $var = isset($_GET[$id]) ? $_GET[$id] : '';
-    if ($var && preg_match('#^' . $regex . '$#', $var)) {
-        return $var;
-    }
-    return $default;
 }

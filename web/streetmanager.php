@@ -1,8 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/../conf/streetmanager';
-
-define('EMPTY_RESULT', '{"type":"FeatureCollection","features":[]}');
+require_once dirname(__FILE__) . '/fns.php';
 
 class Api {
     private $base;
@@ -70,22 +69,7 @@ class Api {
 
 $api = new \Api(API_URL, USERNAME, PASSWORD, MEMCACHE_PREFIX);
 
-header('Content-Type: application/json');
-
-function get($id, $regex, $default = null) {
-    $var = isset($_GET[$id]) ? $_GET[$id] : '';
-    if ($var && preg_match('#^' . $regex . '$#', $var)) {
-        return $var;
-    }
-    return $default;
-}
-
-$bbox = get('bbox', '[\d.]+,[\d.]+,[\d.]+,[\d.]+');
-if (!$bbox) {
-    print EMPTY_RESULT;
-    exit;
-}
-$bbox = explode(',', $bbox);
+$bbox = get_bbox();
 
 $start_date = get('start_date', '\d\d\d\d-\d\d-\d\d', date('Y-m-d'));
 $default_end_date = date('Y-m-d', time()+86400*13*7);
