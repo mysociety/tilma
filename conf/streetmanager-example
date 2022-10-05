@@ -1,6 +1,0 @@
-<?php
-
-define('API_URL', '');
-define('USERNAME', '');
-define('PASSWORD', '');
-define('MEMCACHE_PREFIX', '');

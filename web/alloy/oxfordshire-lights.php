@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../conf/alloy';
+require_once dirname(__FILE__) . '/../../conf/config';
 require_once dirname(__FILE__) . '/../fns.php';
 
 $bbox = get_bbox();

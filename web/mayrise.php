@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/../conf/mayrise';
+require_once dirname(__FILE__) . '/../conf/config';
 require_once dirname(__FILE__) . '/fns.php';
 
 $bbox = get_bbox();
@@ -39,7 +39,7 @@ function data_as_geojson($feature) {
 }
 
 function fetch_data($bbox) {
-    $client = new SoapClient(API_URL, array('exceptions' => 0));
+    $client = new SoapClient(MAYRISE_API_URL, array('exceptions' => 0));
     $result = $client->GetUnitsByRect($bbox[0], $bbox[2], $bbox[1], $bbox[3]);
     if (is_soap_fault($result)) {
         print EMPTY_RESULT;

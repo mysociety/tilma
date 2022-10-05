@@ -1,0 +1,12 @@
+<?php
+
+define('ALLOY_API_KEYS', [
+    'https://foo.assets' => 'key',
+]);
+
+define('MAYRISE_API_URL', '');
+
+define('SM_API_URL', '');
+define('SM_USERNAME', '');
+define('SM_PASSWORD', '');
+define('SM_MEMCACHE_PREFIX', '');

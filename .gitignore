@@ -6,12 +6,8 @@
 /conf/httpd.conf.deployed
 /conf/proxy.config
 /conf/proxy.config.deployed
-/conf/streetmanager
-/conf/streetmanager.deployed
-/conf/mayrise
-/conf/mayrise.deployed
-/conf/alloy
-/conf/alloy.deployed
+/conf/config
+/conf/config.deployed
 /web/down.html
 
 /web/mapserv.fcgi

@@ -19,7 +19,7 @@ function get_bbox() {
 
 function get_alloy_token() {
     $url = get('url', 'https://[a-z.]+');
-    $token = API_KEYS[$url];
+    $token = ALLOY_API_KEYS[$url];
     if (!$token) {
         print EMPTY_RESULT;
         exit;

@@ -1,5 +1,0 @@
-<?php
-
-define('API_KEYS', [
-    'https://foo.assets' => 'key',
-]);

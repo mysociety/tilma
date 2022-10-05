@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/../conf/streetmanager';
+require_once dirname(__FILE__) . '/../conf/config';
 require_once dirname(__FILE__) . '/fns.php';
 
 class Api {
@@ -67,7 +67,7 @@ class Api {
 
 # ---
 
-$api = new \Api(API_URL, USERNAME, PASSWORD, MEMCACHE_PREFIX);
+$api = new \Api(SM_API_URL, SM_USERNAME, SM_PASSWORD, SM_MEMCACHE_PREFIX);
 
 $bbox = get_bbox();
 
