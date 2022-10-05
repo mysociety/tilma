@@ -4,6 +4,8 @@ define('ALLOY_API_KEYS', [
     'https://foo.assets' => 'key',
 ]);
 
+define('MAPIT_API_KEY', '');
+
 define('MAYRISE_API_URL', '');
 
 define('SM_API_URL', '');
