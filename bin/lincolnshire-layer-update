@@ -17,6 +17,7 @@ IFS=$'\n'
 LAYERS="
 Carriageway/Carriageway
 Drainage/LCC_Drainage-GulliesOffletsManholes
+Grit Bins/Grit_Bins
 Public Transport Stops/Public_Transport_Stops
 SL_Bollards - SLLB/SL_Bollards
 SL_Street_Light_Units - SLLU/SL_Street_Light_Units
