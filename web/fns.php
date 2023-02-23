@@ -102,7 +102,7 @@ function alloy_query($type, $design, $attributes, $bbox, $join_attributes=null) 
                 "attributes" => $attributes,
             ],
             "children"=> [[
-                "type" => "GeomWithin",
+                "type" => "GeomIntersects",
                 "children" => [
                     [
                         "type" => "Attribute",
