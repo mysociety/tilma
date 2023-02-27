@@ -59,10 +59,19 @@ function make_request($url, $token, $params) {
     return $data;
 }
 
-function alloy_process_page($token, $design, $bbox, $page, $join_attributes=null, $join_function=null) {
+function alloy_process_page($token, $design, $bbox, $page) {
+    $k = get('url', 'https://[a-z.]+');
+    $cfg = ALLOY_LAYER_CONFIG[$k][$design] ?? [];
+
+    $attributes = ["attributes_itemsTitle", "attributes_itemsGeometry"];
+    $extra_attributes = $cfg['attributes'] ?? [];
+    $attributes = array_merge($attributes, array_keys($extra_attributes));
+
+    $join_attributes = $cfg['join'] ?? null;
+
     $query = $join_attributes ? 'join' : 'query';
     $url = "https://api.uk.alloyapp.io/api/aqs/$query?pageSize=100&page=$page";
-    $attributes = ["attributes_itemsTitle", "attributes_itemsGeometry"];
+
     $params = alloy_query(ucfirst($query), $design, $attributes, $bbox, $join_attributes);
     $data = make_request($url, $token, $params);
 
@@ -70,15 +79,18 @@ function alloy_process_page($token, $design, $bbox, $page, $join_attributes=null
     if (property_exists($data, 'joinResults')) {
         foreach ($data->joinResults as $result) {
             $id = $result->itemId;
-            $extra[$id] = $join_function($result);
+            $type = $result->joinQueries[0]->item->attributes[0]->value;
+            $extra[$id] = $cfg['join_extra']($type);
         }
     }
+
+    $count = count($data->results);
 
     $features = [];
     foreach ($data->results as $result) {
         $id = $result->itemId;
-        $feature = $extra[$id];
-        $feature['id'] = $id;
+        $feature = $extra[$id] ?? [];
+        $feature['itemId'] = $id;
         foreach ($result->attributes as $attr) {
             if ($attr->attributeCode == 'attributes_itemsGeometry') {
                 $feature['geometry'] = $attr->value;
@@ -86,10 +98,17 @@ function alloy_process_page($token, $design, $bbox, $page, $join_attributes=null
             if ($attr->attributeCode == 'attributes_itemsTitle') {
                 $feature['title'] = $attr->value;
             }
+            if (in_array($attr->attributeCode, array_keys($extra_attributes))) {
+                $feature[$extra_attributes[$attr->attributeCode]] = $attr->value;
+            }
+        }
+        if (array_key_exists('filter', $cfg) && !$cfg['filter']($feature)) {
+            continue;
         }
         $features[] = data_as_geojson($feature);
     }
-    return $features;
+
+    return [$count, $features];
 }
 
 function alloy_query($type, $design, $attributes, $bbox, $join_attributes=null) {

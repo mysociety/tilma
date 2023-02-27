@@ -4,6 +4,30 @@ define('ALLOY_API_KEYS', [
     'https://foo.assets' => 'key',
 ]);
 
+function design_id_join_extra($type) {
+    return [
+        "type" => $type,
+        "flag" => something_based_on_type($type),
+    ];
+}
+
+function design_id_filter($r) {
+    return $r['flag'];
+}
+
+define('ALLOY_LAYER_CONFIG', [
+    'https://foo.assets' => [
+        'design_id' => [
+            'attributes' => [
+                "extra_attribute_to_include" => 'key_to_output',
+            ],
+            'join' => ['lookup_attribute_from_linked_data'],
+            'join_extra' => 'design_id_join_extra',
+            'filter' => 'design_id_filter',
+        ],
+    ],
+]);
+
 define('MAPIT_API_KEY', '');
 
 define('MAYRISE_API_URL', '');
