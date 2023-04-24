@@ -19,7 +19,7 @@ unzip -q trees_invent.zip
 
 # Check we are dealing with valid shapefiles.
 for f in tree_groups_invent trees_invent; do
-    if ! ogrinfo -ro -so "${f}.shp" &> /dev/null ; then
+    if ! ogrinfo -ro -so -al "${f}.shp" 2>&1 | grep -q 'Feature Count: [^0]' ; then
         echo "Invalid shapefile detected, aborting to prevent bad data" 1>&2
         exit 1
     fi
