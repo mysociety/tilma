@@ -36,3 +36,6 @@ define('SM_API_URL', '');
 define('SM_USERNAME', '');
 define('SM_PASSWORD', '');
 define('SM_MEMCACHE_PREFIX', '');
+
+define('CONFIRM_API_CONFIG', []);
+define('CONFIRM_LAYER_CONFIG', []);

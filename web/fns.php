@@ -27,6 +27,26 @@ function get_alloy_token() {
     return $token;
 }
 
+function get_confirm_cfg() {
+    $url = get('url', 'https://[a-z.]+');
+    $cfg = CONFIRM_API_CONFIG[$url];
+    if (!$cfg) {
+        print EMPTY_RESULT;
+        exit;
+    }
+    return $cfg;
+}
+
+function get_confirm_layer_cfg($layer) {
+    $url = get('url', 'https://[a-z.]+');
+    $cfg = CONFIRM_LAYER_CONFIG[$url][$layer];
+    if (!$cfg) {
+        print EMPTY_RESULT;
+        exit;
+    }
+    return $cfg;
+}
+
 function get($id, $regex, $default = null) {
     $var = isset($_GET[$id]) ? $_GET[$id] : '';
     if ($var && preg_match('#^' . $regex . '$#', $var)) {
@@ -35,14 +55,14 @@ function get($id, $regex, $default = null) {
     return $default;
 }
 
-function make_request($url, $token, $params) {
+function make_request($url, $token, $params, $auth_type = "Bearer") {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'Content-Type: application/json',
-        "Authorization: Bearer $token",
+        "Authorization: $auth_type $token",
     ]);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
