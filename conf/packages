@@ -1,5 +1,5 @@
 python-paste
-tilecache
+mapcache
 cgi-mapserver
 python-flup
 unifont
