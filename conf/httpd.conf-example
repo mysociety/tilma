@@ -11,5 +11,8 @@ AddHandler fcgid-script .fcgi
 RewriteEngine on
 RewriteRule /favicon.ico / [F]
 
-RewriteRule ^/(osm|vmd|mapumental-map|mapumental-names|mapumental-map-print|mapumental-names-print)/(.*)  /tilecache.fcgi/1.0.0/$1/$2
+<IfModule mapcache_module>
+  MapCacheAlias /mapcache ".../tilma/conf/mapcache.xml"
+</IfModule>
 
+RewriteRule ^/(oml|highways)/(.*)  /mapcache/gmaps/$1@GoogleMapsCompatible/$2 [PT]
