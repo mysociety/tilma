@@ -1,7 +1,5 @@
-python-paste
 libapache2-mod-mapcache
 cgi-mapserver
-python-flup
 unifont
 fonts-dejavu
 php-sqlite3
