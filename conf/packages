@@ -1,7 +1,5 @@
 libapache2-mod-mapcache
 cgi-mapserver
-unifont
-fonts-dejavu
 php-sqlite3
 php-xml
 php-soap
