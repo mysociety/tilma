@@ -1,3 +1,17 @@
 #!/bin/sh
-PHP_FCGI_CHILDREN=0 PHPRC=/etc/php/7.4/fcgi exec /usr/bin/php-cgi -d apc.enabled=1
+# Bookworm
+if [ -d /etc/php/8.2 ] ; then
+    VER=8.2
+# Bullseye
+elif [ -d /etc/php/7.4 ] ; then
+    VER=7.4
+# Buster
+elif [ -d /etc/php/7.3 ] ; then
+    VER=7.3
+# Exit
+else
+    exit 1
+fi
+
+PHP_FCGI_CHILDREN=0 PHPRC=/etc/php/${VER}/fcgi exec /usr/bin/php-cgi -d apc.enabled=1
 
