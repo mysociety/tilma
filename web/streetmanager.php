@@ -71,8 +71,13 @@ $api = new \Api(SM_API_URL, SM_USERNAME, SM_PASSWORD, SM_MEMCACHE_PREFIX);
 
 $bbox = get_bbox();
 
-$start_date = get('start_date', '\d\d\d\d-\d\d-\d\d', date('Y-m-d'));
-$default_end_date = date('Y-m-d', time()+86400*13*7);
+$today = date('Y-m-d');
+$start_date = get('start_date', '\d\d\d\d-\d\d-\d\d', $today);
+if (get('end_today', '1')) {
+    $default_end_date = $today;
+} else {
+    $default_end_date = date('Y-m-d', time()+86400*13*7);
+}
 $end_date = get('end_date', '\d\d\d\d-\d\d-\d\d', $default_end_date);
 $forward_plans = get('forward_plans', '[01]', 1);
 $points = get('points', '[01]', 0);
