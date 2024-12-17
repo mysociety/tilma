@@ -89,10 +89,12 @@ function alloy_process_page($token, $design, $bbox, $page) {
 
     $join_attributes = $cfg['join'] ?? null;
 
+    $pre_fetch_filter = $cfg['pre_fetch_filter'] ?? null;
+
     $query = $join_attributes ? 'join' : 'query';
     $url = "https://api.uk.alloyapp.io/api/aqs/$query?pageSize=100&page=$page";
 
-    $params = alloy_query(ucfirst($query), $design, $attributes, $bbox, $join_attributes);
+    $params = alloy_query(ucfirst($query), $design, $attributes, $bbox, $join_attributes, $pre_fetch_filter);
     $data = make_request($url, $token, $params);
 
     $extra = [];
@@ -131,7 +133,11 @@ function alloy_process_page($token, $design, $bbox, $page) {
     return [$count, $features];
 }
 
-function alloy_query($type, $design, $attributes, $bbox, $join_attributes=null) {
+function alloy_query($type, $design, $attributes, $bbox, $join_attributes=null, $pre_fetch_filter=null) {
+
+    $pre_fetch_filter_AlloyId = $pre_fetch_filter ? $pre_fetch_filter['AlloyId'] : null;
+    $pre_fetch_filter_attributeCode = $pre_fetch_filter ? $pre_fetch_filter['attributeCode'] : null;
+
     $query = [
         "aqs" => [
             "type" => $type,
@@ -140,34 +146,60 @@ function alloy_query($type, $design, $attributes, $bbox, $join_attributes=null) 
                 "dodiCode" => $design,
                 "attributes" => $attributes,
             ],
-            "children"=> [[
-                "type" => "GeomIntersects",
-                "children" => [
-                    [
-                        "type" => "Attribute",
-                        "properties" => [ "attributeCode" => "attributes_itemsGeometry" ]
-                    ],
-                    [
-                        "type" => "Geometry",
-                        "properties" => [
-                            "value" => [
-                                "type" => "Polygon",
-                                "coordinates" => [[
-                                    [$bbox[0], $bbox[1]],
-                                    [$bbox[0], $bbox[3]],
-                                    [$bbox[2], $bbox[3]],
-                                    [$bbox[2], $bbox[1]],
-                                    [$bbox[0], $bbox[1]],
-                                ]]
-                            ]
-                        ]
-                    ]
-                ]
-            ]]
+            "children" => []
         ]
     ];
+
+    $filter = [
+        "type" => "GeomIntersects",
+        "children" => [
+            [
+                "type" => "Attribute",
+                "properties" => [ "attributeCode" => "attributes_itemsGeometry" ]
+            ],
+            [
+                "type" => "Geometry",
+                "properties" => [
+                    "value" => [
+                        "type" => "Polygon",
+                        "coordinates" => [[
+                            [$bbox[0], $bbox[1]],
+                            [$bbox[0], $bbox[3]],
+                            [$bbox[2], $bbox[3]],
+                            [$bbox[2], $bbox[1]],
+                            [$bbox[0], $bbox[1]],
+                        ]]
+                    ]
+                ]
+            ]
+        ]
+    ];
+
     if ($join_attributes) {
         $query["aqs"]["properties"]["joinAttributes"] = $join_attributes;
     }
+
+    if ($pre_fetch_filter) {
+        $filter = [
+            "type" => "And",
+            "children" => [
+                [
+                    "type" => "Equals",
+                    "children" => [
+                        [
+                            "type" => "Attribute",
+                            "properties" => [ "attributeCode" => $pre_fetch_filter_attributeCode ]
+                        ],
+                        [
+                            "type" => "AlloyId",
+                            "properties" => [ "value" => [ $pre_fetch_filter_AlloyId ] ]
+                        ],
+                    ]
+                ],
+                $filter
+            ]
+        ];
+    }
+    array_push($query['aqs']['children'], $filter);
     return $query;
 }
