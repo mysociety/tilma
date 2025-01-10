@@ -13,6 +13,13 @@ isleofwight:
     streetdir: /otherdir
     out: /data/vhost/layers
 
+northamptonshire:
+    host: host
+    username: username
+    password: password
+    dir: /dir
+    out: /data/vhost/layers/
+
 peterborough:
     host: host
     username: username

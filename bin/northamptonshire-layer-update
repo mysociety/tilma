@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -e
+
+source /data/mysociety/shlib/deployfns
+read_conf "$(dirname "$0")/../conf/general.yml"
+
+TMPDIR=$(mktemp -d) || exit 1
+trap 'rm -rf "$TMPDIR"' EXIT
+cd $TMPDIR
+
+# Set IFS to newline in case any layer has spaces in its name
+IFS=$'\n'
+LAYERS="
+Bridges
+Bus_Stop
+Carriageway
+Gates
+GritBins
+Gully
+Pedestrian_Barrier
+Pedestrian_Crossing
+PRoW_Network
+Safety_Bollard
+Sign
+Stile
+Structures
+Traffic_Calming
+Traffic_Signal_Junction
+Tree
+Waymarker
+"
+
+for layer in $LAYERS; do
+    # Silent, except errors, follow redirects, save to file
+    curl -s -S -L -O -u $OPTION_northamptonshire__username:$OPTION_northamptonshire__password \
+    "https://$OPTION_northamptonshire__host/Generic_DataExportPowerBILink/DownloadLatestFile/AssetShape_$layer"
+    unzip -q "AssetShape_$layer"
+    if ! ogrinfo -ro -so -al AssetShape-$layer.shp 2>&1 | grep -q 'Feature Count: [^0]' ; then
+        echo "Invalid shapefile detected, aborting to prevent bad data" 1>&2
+        exit 1
+    fi
+    for ext in dbf shp shx; do
+        mv AssetShape-$layer.$ext $layer.$ext
+    done
+done
+
+mv ./*.{dbf,shp,shx} $OPTION_northamptonshire__out
