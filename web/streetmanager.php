@@ -3,6 +3,9 @@
 require_once dirname(__FILE__) . '/../conf/config';
 require_once dirname(__FILE__) . '/fns.php';
 
+print EMPTY_RESULT;
+exit;
+
 class Api {
     private $base;
     private $token;
