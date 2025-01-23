@@ -1,3 +1,5 @@
+/vendor
+
 /conf/general.yml
 /conf/general.yml.deployed
 /conf/crontab

@@ -203,3 +203,13 @@ function alloy_query($type, $design, $attributes, $bbox, $join_attributes=null, 
     array_push($query['aqs']['children'], $filter);
     return $query;
 }
+
+function db_connect() {
+    $dsn = 'pgsql:';
+    if (OPTION_SM_DB_HOST) $dsn .= 'host=' . OPTION_SM_DB_HOST . ';';
+    if (OPTION_SM_DB_PORT) $dsn .= 'port=' . OPTION_SM_DB_PORT . ';';
+    if (OPTION_SM_DB_NAME) $dsn .= 'dbname=' . OPTION_SM_DB_NAME . ';';
+    $dbh = new PDO($dsn, OPTION_SM_DB_USER, OPTION_SM_DB_PASS);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $dbh;
+}
