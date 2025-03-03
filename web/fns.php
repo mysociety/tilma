@@ -79,9 +79,9 @@ function make_request($url, $token, $params, $auth_type = "Bearer") {
     return $data;
 }
 
-function alloy_process_page($token, $design, $bbox, $page) {
+function alloy_process_page($token, $layer, $bbox, $page) {
     $k = get('url', 'https://[a-z.]+');
-    $cfg = ALLOY_LAYER_CONFIG[$k][$design] ?? [];
+    $cfg = ALLOY_LAYER_CONFIG[$k][$layer] ?? [];
 
     $attributes = ["attributes_itemsTitle", "attributes_itemsGeometry"];
     $extra_attributes = $cfg['attributes'] ?? [];
@@ -94,6 +94,7 @@ function alloy_process_page($token, $design, $bbox, $page) {
     $query = $join_attributes ? 'join' : 'query';
     $url = "https://api.uk.alloyapp.io/api/aqs/$query?pageSize=100&page=$page";
 
+    $design = $cfg['design'] ?? $layer;
     $params = alloy_query(ucfirst($query), $design, $attributes, $bbox, $join_attributes, $pre_fetch_filter);
     $data = make_request($url, $token, $params);
 
