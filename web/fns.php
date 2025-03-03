@@ -136,8 +136,8 @@ function alloy_process_page($token, $layer, $bbox, $page) {
 
 function alloy_query($type, $design, $attributes, $bbox, $join_attributes=null, $pre_fetch_filter=null) {
 
-    $pre_fetch_filter_AlloyId = $pre_fetch_filter ? $pre_fetch_filter['AlloyId'] : null;
-    $pre_fetch_filter_attributeCode = $pre_fetch_filter ? $pre_fetch_filter['attributeCode'] : null;
+    $pre_fetch_filter_AlloyId = $pre_fetch_filter['AlloyId'] ?? null;
+    $pre_fetch_filter_attributeCode = $pre_fetch_filter['attributeCode'] ?? null;
 
     $query = [
         "aqs" => [
@@ -180,7 +180,7 @@ function alloy_query($type, $design, $attributes, $bbox, $join_attributes=null, 
         $query["aqs"]["properties"]["joinAttributes"] = $join_attributes;
     }
 
-    if ($pre_fetch_filter) {
+    if ($pre_fetch_filter_attributeCode && $pre_fetch_filter_AlloyId) {
         $filter = [
             "type" => "And",
             "children" => [
@@ -200,7 +200,13 @@ function alloy_query($type, $design, $attributes, $bbox, $join_attributes=null, 
                 $filter
             ]
         ];
+    } elseif ($pre_fetch_filter) {
+        $filter = [
+            "type" => "And",
+            "children" => [ $pre_fetch_filter, $filter ],
+        ];
     }
+
     array_push($query['aqs']['children'], $filter);
     return $query;
 }
