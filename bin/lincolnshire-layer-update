@@ -15,19 +15,23 @@ cd $TMPDIR
 
 IFS=$'\n'
 LAYERS="
-Carriageway/Carriageway
-Drainage/LCC_Drainage-GulliesOffletsManholes
-Grit Bins/Grit_Bins
-Public Transport Stops/Public_Transport_Stops
-SL_Bollards - SLLB/SL_Bollards
-SL_Street_Light_Units - SLLU/SL_Street_Light_Units
-SL_Lit_Signs - SLLG/SL_Lit_Signs
-Safety Barriers/Safety_Barriers
-Structures/ST_All_Structures
+Asset Layers/Carriageway/Carriageway
+Asset Layers/Drainage/Drainage01-CollectionPoints
+Asset Layers/Grit Bins/Grit_Bins
+Asset Layers/Public Rights of Way/PRoW_Routes
+Asset Layers/Public Transport Stops/Public_Transport_Stops
+Asset Layers/Safety Barriers/Safety_Barriers
+Asset Layers/SL_Bollards - SLLB/SL_Bollards
+Asset Layers/SL_Lit_Signs - SLLG/SL_Lit_Signs
+Asset Layers/SL_Street_Light_Units - SLLU/SL_Street_Light_Units
+Asset Layers/Structures/ST_All_Structures
+Highway Network/National Street Gazetteer/NSG
+Mapping/LLPG Address Data
+Divisional/Verges/LCC Verges
 "
 
 for layer in $LAYERS; do
-curl -s -O -u $OPTION_lincolnshire__username:$OPTION_lincolnshire__password \
+curl -s -S -O -u $OPTION_lincolnshire__username:$OPTION_lincolnshire__password \
     "sftp://$OPTION_lincolnshire__host$OPTION_lincolnshire__dir/$layer.{DAT,ID,IND,MAP,TAB}"
     sleep 1
 done;
