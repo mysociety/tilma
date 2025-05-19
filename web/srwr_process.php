@@ -156,3 +156,8 @@ function db_connect() {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $dbh;
 }
+
+function _stripTime($date) {
+	$date = preg_replace( '/ .*?$/', '', $date);
+	return $date;
+}
