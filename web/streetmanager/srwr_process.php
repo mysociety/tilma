@@ -1,5 +1,9 @@
 <?php
 
+require_once __DIR__ . '/../../conf/config';
+require_once __DIR__ . '/../fns.php';
+require __DIR__ . '/../../vendor/autoload.php';
+
 $path = './srwr_data/';
 $printrow = [];
 $companies = [];
@@ -26,6 +30,12 @@ insertRows();
 
 function deleteFiles() {
 	global $path;
+
+	if (!file_exists($path)) {
+		mkdir($path, 0777, true);
+		return;
+	}
+
 	$files = glob($path . '*');
 	foreach($files as $file) {
   		if(is_file($file)) {
@@ -85,23 +95,24 @@ function collateRows($row) {
 	 global $printrow;
 	 global $companies;
 
+	 $activityId = $row[2];
 	 if ($row[1] == '006') {
-		$printrow[$row[2]]['project_ref'] = $row[3];
+		$printrow[$activityId]['project_ref'] = $row[3];
 	 } else if ($row[1] == '007') {
-	    $printrow[$row[2]]['works_location_coordinates'] = $row[12];
-	    $printrow[$row[2]]['location_text'] = $row[6];
+	    $printrow[$activityId]['works_location_coordinates'] = $row[12];
+	    $printrow[$activityId]['location_text'] = $row[6];
 	 } else if ($row[1] == '010') {
-	    $printrow[$row[2]]['works_location_type'] = $row[9];
+	    $printrow[$activityId]['works_location_type'] = $row[9];
 	 } else if ($row[1] == '008') {
 	   if ($row[6]) {
-	      $printrow[$row[2]]['proposed_start_date'] = _stripTime($row[6]);
+	      $printrow[$activityId]['proposed_start_date'] = _stripTime($row[6]);
 	   } else if ($row[13]) {
-	      $printrow[$row[2]]['proposed_start_date'] = _stripTime($row[13]);
+	      $printrow[$activityId]['proposed_start_date'] = _stripTime($row[13]);
 	   }
 	   if ($row[9]) {
-	      $printrow[$row[2]]['proposed_end_date'] = _stripTime($row[9]);
+	      $printrow[$activityId]['proposed_end_date'] = _stripTime($row[9]);
 	   } else if ($row[10]) {
-	      $printrow[$row[2]]['proposed_end_date'] = _stripTime($row[10]);
+	      $printrow[$activityId]['proposed_end_date'] = _stripTime($row[10]);
 	   }
 	 } else if ($row[1] == '099') {
 	   $companies[ $row[3] . $row[4] ] = $row[5];
@@ -123,38 +134,11 @@ function addCompanies() {
 function insertRows() {
 	global $printrow;
 
-	$non_primary_columns = ['promoter_organisation', 'location',
-        'works_location_type', 'proposed_start_date', 'proposed_end_date', 'work_category',
-        'work_status', 'traffic_management_type', 'permit_status', 'close_footway'];
-    $excluded_columns = $non_primary_columns;
-    foreach ($excluded_columns as $k => $v) {
-        $excluded_columns[$k] = "EXCLUDED." . $v;
-    }
-
-	$dbh = db_connect();
-    $query = $dbh->prepare("INSERT INTO streetmanager
-         (permit_reference_number, " . join(', ', $non_primary_columns) . ")
-         VALUES (?" . str_repeat(",?", count($non_primary_columns)) . ")
-         ON CONFLICT (permit_reference_number) DO UPDATE SET
-         (" . join(', ', $non_primary_columns) . ") = (" . join(', ', $excluded_columns) . ")
-    ");
+	$query = createStreetManagerQuery();
 	foreach ($printrow as $key => $object) {
-		$query->execute([
-			$key, $object['project_name'], 'SRID=27700;' . $object['works_location_coordinates'],
-			$object['works_location_type'], $object['proposed_start_date'], $object['proposed_end_date'], 'work_cat',
-			'status', 'traffic_management', 'Permit', 'Footway'
-		]);
+		$object['permit_reference_number'] = $key;
+		insertIntoStreetManager($query, $object);
 	};
-}
-
-function db_connect() {
-    $dsn = 'pgsql:';
-    if (OPTION_SM_DB_HOST) $dsn .= 'host=' . OPTION_SM_DB_HOST . ';';
-    if (OPTION_SM_DB_PORT) $dsn .= 'port=' . OPTION_SM_DB_PORT . ';';
-    if (OPTION_SM_DB_NAME) $dsn .= 'dbname=' . OPTION_SM_DB_NAME . ';';
-    $dbh = new PDO($dsn, OPTION_SM_DB_USER, OPTION_SM_DB_PASS);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    return $dbh;
 }
 
 function _stripTime($date) {
