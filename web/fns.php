@@ -237,8 +237,8 @@ function createStreetManagerQuery() {
 function insertIntoStreetManager($query, $object) {
 
     $query->execute([
-		$object['permit_reference_number'], $object['project_name'], 'SRID=27700;' . $object['works_location_coordinates'],
-		$object['works_location_type'], $object['proposed_start_date'], $object['proposed_end_date'], 'work_cat',
-		'status', 'traffic_management', 'Permit', 'Footway'
+        $object['permit_reference_number'], $object['promoter_organisation'], 'SRID=27700;' . $object['works_location_coordinates'],
+        $object['works_location_type'], $object['proposed_start_date'], $object['proposed_end_date'], $object['work_category'],
+        $object['work_status'], $object['traffic_management_type'], $object['permit_status'], $object['close_footway']
 	]);
 }

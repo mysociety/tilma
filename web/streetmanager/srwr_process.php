@@ -108,37 +108,37 @@ function collateRows($row) {
 	 global $printrow;
 	 global $companies;
 
+	 $record_type = $row[1];
 	 $activityId = $row[2];
-	 if ($row[1] == '001') {
+
+	 if ($record_type == '001') { # Activity
 		$printrow[$activityId]['latest_phase'] = $row[11];
-	 } else if ($row[1] == '006') {
-		$printrow[$activityId]['project_ref'] = $row[3];
-	 } else if ($row[1] == '007') {
-	    $printrow[$activityId]['works_location_coordinates'] = $row[12];
-	    $printrow[$activityId]['location_text'] = $row[6];
-		$printrow[$activityId]['work_category'] = _workCategory($row[9]);
-		$printrow[$activityId]['work_status'] = _activityStatuses($row[10]);
-	 } else if ($row[1] == '010') {
+		$printrow[$activityId]['project_ref'] = $row[5];
+	 } else if ($record_type == '007') { # Phase
+		if ($row[7] == $printrow[$activityId]['latest_phase'] ) {
+			$printrow[$activityId]['works_location_coordinates'] = $row[12];
+			$printrow[$activityId]['location_text'] = $row[6];
+			$printrow[$activityId]['work_category'] = _workCategory($row[9]);
+			$printrow[$activityId]['work_status'] = _activityStatuses($row[10]);
+		}
+	 } else if ($record_type == '010') { # Site
 	    $printrow[$activityId]['works_location_type'] = _siteLocations($row[9]);
-	 } else if ($row[1] == '008') {
+	 } else if ($record_type == '008') { # Undertaker phase
 	   if ($row[3] == $printrow[$activityId]['latest_phase'] && $row[6] ) {
 	      $printrow[$activityId]['proposed_start_date'] = _stripTime($row[6]);
-	   } else if ($row[3] == $printrow[$activityId]['latest_phase'] && $row[13]) {
-	      $printrow[$activityId]['proposed_start_date'] = _stripTime($row[13]);
+	   } else if ($row[3] == $printrow[$activityId]['latest_phase'] && $row[4]) {
+	      $printrow[$activityId]['proposed_start_date'] = _stripTime($row[4]);
 	   }
 	   if ($row[3] == $printrow[$activityId]['latest_phase'] && $row[9]) {
 	      $printrow[$activityId]['proposed_end_date'] = _stripTime($row[9]);
-	   } else if ($row[3] == $printrow[$activityId]['latest_phase'] && $row[14]) {
-	      $printrow[$activityId]['proposed_end_date'] = _stripTime($row[14]);
+	   } else if ($row[3] == $printrow[$activityId]['latest_phase'] && $row[8]) {
+	      $printrow[$activityId]['proposed_end_date'] = _stripTime($row[8]);
 	   }
 	   if ($row[3] == $printrow[$activityId]['latest_phase'] && $row[21]) {
-		  $printrow[$activityId]['traffic_management_type'] = _trafficManagementType($row[21]);
-		  $printrow[$activityId]['close_footway'] = $row[21] == '1' ? 'Yes' : 'No';
+		  $printrow[$activityId]['traffic_management_type'] = _trafficManagementType($row[20]);
+		  $printrow[$activityId]['close_footway'] = $row[21] ? 'No' : 'Yes';
 	   }
-	   if ($row[3] == $printrow[$activityId]['latest_phase'] && $row[29]) {
-		  $printrow[$activityId]['permit_status'] = $row[29] == '1' ? 'Accepted' : 'Unknown permit';
-	   }
-	 } else if ($row[1] == '099') {
+	 } else if ($record_type == '099') { # District
 	   $companies[ $row[3] . $row[4] ] = $row[5];
 	 }
 }
@@ -168,8 +168,8 @@ function addMissingFields($key) {
 		$printrow[$key]['works_location_type'] = _siteLocations('0');
 	}
 
-	if (!array_key_exists('project_name', $printrow[ $key ]) ) {
-		$printrow[ $key ]['project_name'] = '';
+	if (!array_key_exists('promoter_organisation', $printrow[ $key ]) ) {
+		$printrow[ $key ]['promoter_organisation'] = '';
 	}
 
 	if (!array_key_exists('traffic_management_type', $printrow[ $key ]) ) {
@@ -185,7 +185,7 @@ function addMissingFields($key) {
 	}
 
 	if (!array_key_exists('permit_status', $printrow[ $key ]) ) {
-		$printrow[ $key ]['permit_status'] = 'Unknown permit';
+		$printrow[ $key ]['permit_status'] = '';
 	}
 
 }
@@ -219,7 +219,7 @@ function addCompanies($key, $code) {
 	if (array_key_exists('project_ref', $code) ) {
 		$company_key = $code['project_ref'];
 		if ( array_key_exists($company_key, $companies) ) {
-			$printrow[ $key ]['project_name'] = $companies[$company_key];
+			$printrow[ $key ]['promoter_organisation'] = $companies[$company_key];
 		}
 	}
 }
@@ -229,7 +229,7 @@ function insertRows() {
 
 	$query = createStreetManagerQuery();
 	foreach ($printrow as $key => $object) {
-		$object['permit_reference_number'] = $key;
+		$object['permit_reference_number'] = 'srwr_' . $key;
 		insertIntoStreetManager($query, $object);
 	};
 }
