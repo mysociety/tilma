@@ -60,7 +60,7 @@ foreach ($live as $fn => $data) {
             $child = true;
         }
         print "<h3>$data->directory</h3>\n";
-        print "<table cellpadding=3><tr><th>File</th><th>Layer</th><th>Date</th><th>Features</th><th>Staging</th></tr>\n";
+        print "<table cellpadding=3><tr><th>File</th><th>Layer</th><th>Date</th><th>Features</th><th>Projection</th><th>Staging</th></tr>\n";
         $cobrand = $data->directory;
     }
     $st = $staging->$fn;
@@ -71,20 +71,25 @@ foreach ($live as $fn => $data) {
     print "<td>" . ($data->in_use ?: '<i>none</i>') . "</td>";
     print "<td>$date</td>";
     print "<td>$data->features</td>";
+    print "<td>$data->srid</td>";
     print "<td><small>";
     if ($st) {
-        if ($st->date == $data->date && $st->features == $data->features && $st->in_use == $data->in_use) {
+        $st_date = date('Y-m-d', $st->date);
+        if ($st_date == $date && $st->features == $data->features && $st->in_use == $data->in_use && $st->srid == $data->srid) {
             print "<i>Same</i>";
         } else {
             $diff = [];
-            if ($st->date != $data->date) {
-                $diff[] = date('Y-m-d', $st->date);
+            if ($st_date != $date) {
+                $diff[] = $st_date;
             }
             if ($st->features != $data->features) {
                 $diff[] = $st->features;
             }
             if ($st->in_use != $data->in_use) {
                 $diff[] = $st->in_use;
+            }
+            if ($st->srid != $data->srid) {
+                $diff[] = $st->srid;
             }
             print join('<br>', $diff);
         }
@@ -110,14 +115,14 @@ foreach ($staging as $fn => $data) {
             print "</table>\n";
         }
         print "<h3>$data->directory</h3>\n";
-        print "<table cellpadding=3><tr><th>File</th><th>Layer</th><th>Date</th><th>Features</th></tr>";
+        print "<table cellpadding=3><tr><th>File</th><th>Layer</th><th>Date</th><th>Features</th><th>Projection</th></tr>";
         $cobrand = $data->directory;
     }
     $date = date('Y-m-d', $data->date);
     $fields = join(', ', $data->fields);
     print "<tr><td class=b title='$fields'>$fn</td><td>";
     print $data->in_use ?: '<i>none</i>';
-    print "</td><td>$date</td><td>$data->features</td></tr>\n";
+    print "</td><td>$date</td><td>$data->features</td><td>$data->srid</td></tr>\n";
 }
 if ($cobrand) {
     print '</table>';
