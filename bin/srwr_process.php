@@ -285,7 +285,7 @@ function _siteLocations($site_code) {
 		'04' => 'Cycleway'
 	];
 
-	return $site_code && $sites[$site_code] ? $sites[$site_code] : 'Details unknown';
+	return $site_code && $sites[$site_code] ? $sites[$site_code] : '';
 }
 
 function _trafficManagementType($tmtype) {
