@@ -4,7 +4,7 @@ require_once __DIR__ . '/../conf/config';
 require_once __DIR__ . '/../web/fns.php';
 require __DIR__ . '/../vendor/autoload.php';
 
-$path = '../../data/srwr_data/';
+$path = __DIR__ . '/../../data/srwr_data/';
 $printrow = [];
 $companies = [];
 
@@ -285,7 +285,7 @@ function _siteLocations($site_code) {
 		'04' => 'Cycleway'
 	];
 
-	return $site_code && $sites[$site_code] ? $sites[$site_code] : 'Details unknown';
+	return $site_code && $sites[$site_code] ? $sites[$site_code] : '';
 }
 
 function _trafficManagementType($tmtype) {

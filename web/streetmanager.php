@@ -38,11 +38,18 @@ function data_as_geojson($row) {
     $tm = strtolower($row['traffic_management_type']);
     $category = $row['work_category'];
     if ($category == 'Major (PAA)') $category = 'Major';
+
+    $summary = "$category works";
+    if ($location_type) {
+        $summary .= " in $location_type";
+    }
+    $summary .= ", with $tm";
+
     $properties = [
         'work_ref' => $row['permit_reference_number'],
         'start_date' => $row['proposed_start_date'],
         'end_date' => $row['proposed_end_date'],
-        'summary' => "$category works in $location_type, with $tm",
+        'summary' => $summary,
         'promoter' => prettify_text($row['promoter_organisation']),
     ];
     return [
