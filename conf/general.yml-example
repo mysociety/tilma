@@ -40,3 +40,6 @@ lincolnshire:
     password: password
     dir: /dir
     out: /data/vhost/layers
+
+shropshire:
+    out: /data/vhost/layers
