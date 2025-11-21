@@ -97,6 +97,10 @@ function alloy_process_page($token, $layer, $bbox, $page) {
     $design = $cfg['design'] ?? $layer;
     $params = alloy_query(ucfirst($query), $design, $attributes, $bbox, $join_attributes, $pre_fetch_filter);
     $data = make_request($url, $token, $params);
+    if (!$data) {
+        print EMPTY_RESULT;
+        exit;
+    }
 
     $extra = [];
     if (property_exists($data, 'joinResults')) {
