@@ -458,7 +458,7 @@ class Proxy {
                 "Proxy Version"      => $GLOBALS['version'],
                 // "PHP Version"        => phpversion(),
                 // "Curl Version"       => $curl_version[version],
-                "Configuration File" => "OK", // or it would have failed in XmlParser()
+                "Configuration File" => "OK", // or it would have failed in XmlParserT()
                 "Log File"           => "OK"  // or it would have failed in configurationParameterError()
             );
 
@@ -2430,7 +2430,7 @@ class RateMeter
 
         $this->updateClicks(1, $clickCount); //Updating the click table so we know when to clean up (aka after 10,000 requests)
 
-        if (isset($lastRequest) || count($lastRequest) > 0) {
+        if (isset($lastRequest) && count($lastRequest) > 0) {
 
             $count = $lastRequest['count'];
 
@@ -2588,7 +2588,7 @@ class ProxyConfig {
     public function useXML()
     {
 
-        $xmlParser = new XmlParser();
+        $xmlParser = new XmlParserT();
 
         $proxyconfig = $xmlParser->results[0]['proxyconfig'];
 
@@ -2757,7 +2757,7 @@ class ProxyConfig {
 
 }
 
-class XmlParser
+class XmlParserT
 {
     public $results = array();
 
