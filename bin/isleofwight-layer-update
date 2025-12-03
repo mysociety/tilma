@@ -82,12 +82,13 @@ Verges-Natural
 "
 
 for layer in $LAYERS; do
-curl -s -S -O -u $OPTION_isleofwight__username:$OPTION_isleofwight__password \
-    "sftp://$OPTION_isleofwight__host$OPTION_isleofwight__dir/$layer.{dat,id,map,tab}"
+    layer_encoded=$(echo $layer | sed -e 's/ /%20/g')
+    curl -s -S -O -u $OPTION_isleofwight__username:$OPTION_isleofwight__password \
+         "sftp://$OPTION_isleofwight__host$OPTION_isleofwight__dir/${layer_encoded}.{dat,id,map,tab}"
     sleep 1
 done;
 
-rename 's/ /_/g' *
+rename 's/%20/_/g' *
 
 curl -s -S -O -u $OPTION_isleofwight__username:$OPTION_isleofwight__password \
   "sftp://$OPTION_isleofwight__host$OPTION_isleofwight__streetdir/Streets.{dat,id,map,tab}"
