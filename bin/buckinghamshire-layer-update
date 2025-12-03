@@ -22,7 +22,7 @@ HWLightingAsset
 "
 
 for layer in $LAYERS; do
-    curl -s -O -u $OPTION_buckinghamshire__username:$OPTION_buckinghamshire__password \
+    curl -s -S -O -u $OPTION_buckinghamshire__username:$OPTION_buckinghamshire__password \
     "sftp://$OPTION_buckinghamshire__host$OPTION_buckinghamshire__dir/$layer.{dat,id,map,TAB}"
     ogr2ogr -where "feature_end_date = '3000/01/01'" ${layer}Live.tab ${layer}.TAB
 done

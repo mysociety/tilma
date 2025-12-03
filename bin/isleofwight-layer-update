@@ -82,14 +82,14 @@ Verges-Natural
 "
 
 for layer in $LAYERS; do
-curl -s -O -u $OPTION_isleofwight__username:$OPTION_isleofwight__password \
+curl -s -S -O -u $OPTION_isleofwight__username:$OPTION_isleofwight__password \
     "sftp://$OPTION_isleofwight__host$OPTION_isleofwight__dir/$layer.{dat,id,map,tab}"
     sleep 1
 done;
 
 rename 's/ /_/g' *
 
-curl -s -O -u $OPTION_isleofwight__username:$OPTION_isleofwight__password \
+curl -s -S -O -u $OPTION_isleofwight__username:$OPTION_isleofwight__password \
   "sftp://$OPTION_isleofwight__host$OPTION_isleofwight__streetdir/Streets.{dat,id,map,tab}"
 
 mv *.{dat,id,map,tab} $OPTION_isleofwight__out
