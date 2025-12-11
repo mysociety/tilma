@@ -31,9 +31,12 @@ Divisional/Verges/LCC Verges
 "
 
 for layer in $LAYERS; do
-curl -s -S -O -u $OPTION_lincolnshire__username:$OPTION_lincolnshire__password \
-    "sftp://$OPTION_lincolnshire__host$OPTION_lincolnshire__dir/$layer.{DAT,ID,IND,MAP,TAB}"
+    layer_encoded=$(echo $layer | sed -e 's/ /%20/g')
+    curl -s -S -O -u $OPTION_lincolnshire__username:$OPTION_lincolnshire__password \
+         "sftp://$OPTION_lincolnshire__host$OPTION_lincolnshire__dir/${layer_encoded}.{DAT,ID,IND,MAP,TAB}"
     sleep 1
 done;
+
+rename 's/%20/_/g' *
 
 mv *.{DAT,ID,IND,MAP,TAB} $OPTION_lincolnshire__out
