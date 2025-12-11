@@ -1,5 +1,22 @@
 <?php
 
+function different_type($data) {
+    if ($data->in_use ?? 0) {
+        $geometry_map = $data->in_use->type;
+        $geometry_file = $data->geometry;
+        if (preg_match('#Point#', $geometry_file) && $geometry_map != 'POINT') {
+            return 1;
+        }
+        if (preg_match('#Polygon#', $geometry_file) && $geometry_map != 'POLYGON') {
+            return 1;
+        }
+        if (preg_match('#Line String#', $geometry_file) && $geometry_map != 'LINE') {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 $summary = '/data/vhost/tilma.mysociety.org/layers/summary.json';
 if (!file_exists($summary)) {
     print "Only works on live site.";
@@ -21,6 +38,7 @@ $live = json_decode(file_get_contents($summary));
         h3 { margin-top: 1em; }
         table { width: 100%; }
         td.b { word-break: break-all; }
+        tr.e { color: #f00; }
         summary { display: list-item; }
         summary h2 { display: inline-block; padding-top: 0; }
     </style>
@@ -67,15 +85,24 @@ foreach ($live as $fn => $data) {
     $date = date('Y-m-d', $data->date);
     $fields = join(', ', $data->fields);
     $display_fn = str_replace($data->directory . '/', '', $fn);
-    print "<tr><td class=b title='$fields'>$display_fn</td>";
-    print "<td>" . ($data->in_use ?: '<i>none</i>') . "</td>";
+    print "<tr";
+    if (different_type($data)) {
+        print ' class=e';
+    }
+    print "><td class=b title='$fields'>$display_fn</td>";
+    print "<td>" . (isset($data->in_use) ? $data->in_use->name : '<i>none</i>') . "</td>";
     print "<td>$date</td>";
     print "<td>$data->features</td>";
     print "<td>$data->srid</td>";
     print "<td><small>";
     if ($st) {
         $st_date = date('Y-m-d', $st->date);
-        if ($st_date == $date && $st->features == $data->features && $st->in_use == $data->in_use && $st->srid == $data->srid) {
+        $st_in_use = $st->in_use ?? 0;
+        $data_in_use = $data->in_use ?? 0;
+        if ($st_date == $date
+            && $st->features == $data->features
+            && (($st_in_use && $data_in_use && $st_in_use->name == $data_in_use->name) || (!$st_in_use && !$data_in_use))
+            && $st->srid == $data->srid) {
             print "<i>Same</i>";
         } else {
             $diff = [];
@@ -85,8 +112,12 @@ foreach ($live as $fn => $data) {
             if ($st->features != $data->features) {
                 $diff[] = $st->features;
             }
-            if ($st->in_use != $data->in_use) {
-                $diff[] = $st->in_use;
+            if ($st_in_use && $data_in_use && $st_in_use->name != $data_in_use->name) {
+                $diff[] = $st_in_use->name;
+            } elseif ($st_in_use && !$data_in_use) {
+                $diff[] = $st_in_use->name;
+            } elseif (!$st_in_use && $data_in_use) {
+                $diff[] = '<i>none</i>';
             }
             if ($st->srid != $data->srid) {
                 $diff[] = $st->srid;
@@ -120,8 +151,12 @@ foreach ($staging as $fn => $data) {
     }
     $date = date('Y-m-d', $data->date);
     $fields = join(', ', $data->fields);
-    print "<tr><td class=b title='$fields'>$fn</td><td>";
-    print $data->in_use ?: '<i>none</i>';
+    print "<tr";
+    if (different_type($data)) {
+        print ' class=e';
+    }
+    print "><td class=b title='$fields'>$fn</td><td>";
+    print isset($data->in_use) ? $data->in_use->name : '<i>none</i>';
     print "</td><td>$date</td><td>$data->features</td><td>$data->srid</td></tr>\n";
 }
 if ($cobrand) {
