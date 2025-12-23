@@ -32,8 +32,13 @@ Divisional/Verges/LCC Verges
 
 for layer in $LAYERS; do
     layer_encoded=$(echo $layer | sed -e 's/ /%20/g')
-    curl -s -S -O -u $OPTION_lincolnshire__username:$OPTION_lincolnshire__password \
-         "sftp://$OPTION_lincolnshire__host$OPTION_lincolnshire__dir/${layer_encoded}.{DAT,ID,IND,MAP,TAB}"
+    if [[ "$layer_encoded" == "Mapping/LLPG%20Address%20Data" || "$layer_encoded" == "Divisional/Verges/LCC%20Verges" ]]; then
+        curl -s -S -O -u $OPTION_lincolnshire__username:$OPTION_lincolnshire__password \
+            "sftp://$OPTION_lincolnshire__host$OPTION_lincolnshire__dir/${layer_encoded}.{DAT,ID,MAP,TAB}"
+    else
+        curl -s -S -O -u $OPTION_lincolnshire__username:$OPTION_lincolnshire__password \
+            "sftp://$OPTION_lincolnshire__host$OPTION_lincolnshire__dir/${layer_encoded}.{DAT,ID,IND,MAP,TAB}"
+    fi
     sleep 1
 done;
 
