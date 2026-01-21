@@ -5,6 +5,11 @@ buckinghamshire:
     dir: /dir
     out: /data/vhost/layers/
 
+centralbedfordshire:
+    container_url: url
+    sas_token: sas_token
+    out: /data/vhost/layers/
+
 isleofwight:
     host: host
     username: username
