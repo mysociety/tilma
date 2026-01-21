@@ -44,16 +44,17 @@ azcopy copy "${CONTAINER_URL}/${LATEST_BLOB}?${SAS_TOKEN}" "$TEMP_DIR/"
 mkdir "$TEMP_DIR/extracted"
 unzip -o "$TEMP_DIR/${LATEST_BLOB}" -d "$TEMP_DIR/extracted"
 
-# Generate shapefiles
+# The main reason for doing this is the "Asset Refe" attribute contains spaces
+# which mapserver struggles with. The filtering and 'Aurora_OID' are just drive-bys.
 cd "$TEMP_DIR/extracted"
 ogr2ogr LightingPoint.shp Assetpoint.shp -sql \
     "SELECT Aurora_OID as unit_id, \"Asset Refe\" AS asset_ref \
     FROM Assetpoint \
     WHERE \"Asset Type\" = 'Lighting Point'"
-ogr2ogr GritBins.shp Assetpoint.shp -sql \
+ogr2ogr GritBin.shp Assetpoint.shp -sql \
     "SELECT Aurora_OID as unit_id, \"Asset Refe\" AS asset_ref \
     FROM Assetpoint \
-    WHERE \"Asset Type\" = 'Grit Bins'"
+    WHERE \"Asset Type\" = 'Grit Bin'"
 ogr2ogr Street.shp Assetline.shp -sql \
     "SELECT Aurora_OID as unit_id, \"Asset Refe\" AS asset_ref \
     FROM Assetline \
@@ -61,4 +62,4 @@ ogr2ogr Street.shp Assetline.shp -sql \
 
 # Move generated shapefiles to out destination
 mkdir -p "$OUT_DIR"
-mv LightingPoint.* GritBins.* Street.* "$OUT_DIR"
+mv LightingPoint.* GritBin.* Street.* "$OUT_DIR"
