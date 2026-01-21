@@ -1,0 +1,59 @@
+#!/bin/bash
+
+set -eo pipefail
+
+source /data/mysociety/shlib/deployfns
+read_conf "$(dirname "$0")/../conf/general.yml"
+
+CONTAINER_URL="$OPTION_centralbedfordshire__container_url"
+SAS_TOKEN="$OPTION_centralbedfordshire__sas_token"
+OUT_DIR="$OPTION_centralbedfordshire__out"
+
+if ! command -v azcopy &> /dev/null; then
+    echo "Error: azcopy is not installed"
+    exit 1
+fi
+
+# List all .zip files with their properties, sorted by last modified (newest first).
+LATEST_BLOB=$(azcopy list "${CONTAINER_URL}?${SAS_TOKEN}" --properties LastModifiedTime --log-level ERROR \
+    | grep '\.zip;' \
+    | sort -t';' -k2 -r \
+    | head -1 \
+    | cut -d';' -f1)
+
+if [ -z "$LATEST_BLOB" ]; then
+    echo "No .zip files found"
+    exit 1
+fi
+
+# Create temp directory for download.
+TEMP_DIR=$(mktemp -d)
+trap "rm -rf $TEMP_DIR" EXIT
+
+# Download the file.
+azcopy copy "${CONTAINER_URL}/${LATEST_BLOB}?${SAS_TOKEN}" "$TEMP_DIR/" --log-level ERROR
+
+# Extract it.
+mkdir "$TEMP_DIR/extracted"
+unzip -o "$TEMP_DIR/${LATEST_BLOB}" -d "$TEMP_DIR/extracted"
+
+# The main reason for doing this is the "Asset Refe" and "Internal A" attributes
+# contain spaces which mapserver struggles with - the filtering is just a drive-by
+# since we're already processing the files.
+cd "$TEMP_DIR/extracted"
+ogr2ogr LightingPoint.shp Assetpoint.shp -sql \
+    "SELECT \"Internal A\" as unit_id, \"Asset Refe\" AS asset_ref \
+    FROM Assetpoint \
+    WHERE \"Asset Type\" = 'Lighting Point'"
+ogr2ogr GritBin.shp Assetpoint.shp -sql \
+    "SELECT \"Internal A\" as unit_id, \"Asset Refe\" AS asset_ref \
+    FROM Assetpoint \
+    WHERE \"Asset Type\" = 'Grit Bin'"
+ogr2ogr Street.shp Assetline.shp -sql \
+    "SELECT \"Internal A\" as unit_id, \"Asset Refe\" AS asset_ref \
+    FROM Assetline \
+    WHERE \"Asset Type\" = 'Street'"
+
+# Move generated shapefiles to out destination.
+mkdir -p "$OUT_DIR"
+mv LightingPoint.* GritBin.* Street.* "$OUT_DIR"
