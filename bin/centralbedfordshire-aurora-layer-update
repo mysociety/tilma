@@ -15,7 +15,7 @@ if ! command -v azcopy &> /dev/null; then
 fi
 
 # List all .zip files with their properties, sorted by last modified (newest first).
-LATEST_BLOB=$(azcopy list "${CONTAINER_URL}?${SAS_TOKEN}" --properties LastModifiedTime --log-level ERROR \
+LATEST_BLOB=$(azcopy list "${CONTAINER_URL}?${SAS_TOKEN}" --properties LastModifiedTime \
     | grep '\.zip;' \
     | sort -t';' -k2 -r \
     | head -1 \
@@ -31,7 +31,7 @@ TEMP_DIR=$(mktemp -d)
 trap "rm -rf $TEMP_DIR" EXIT
 
 # Download the file.
-azcopy copy "${CONTAINER_URL}/${LATEST_BLOB}?${SAS_TOKEN}" "$TEMP_DIR/" --log-level ERROR
+azcopy copy "${CONTAINER_URL}/${LATEST_BLOB}?${SAS_TOKEN}" "$TEMP_DIR/"
 
 # Extract it.
 mkdir "$TEMP_DIR/extracted"
