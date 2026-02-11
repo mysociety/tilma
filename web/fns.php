@@ -229,7 +229,8 @@ function createStreetManagerQuery() {
 
     $non_primary_columns = ['promoter_organisation', 'location',
         'works_location_type', 'proposed_start_date', 'proposed_end_date', 'work_category',
-        'work_status', 'traffic_management_type', 'permit_status', 'close_footway'];
+        'work_status', 'traffic_management_type', 'permit_status', 'close_footway',
+        'street_name', 'area_name'];
     $excluded_columns = $non_primary_columns;
     foreach ($excluded_columns as $k => $v) {
         $excluded_columns[$k] = "EXCLUDED." . $v;
@@ -250,6 +251,7 @@ function insertIntoStreetManager($query, $object) {
     $query->execute([
         $object['permit_reference_number'], $object['promoter_organisation'], 'SRID=27700;' . $object['works_location_coordinates'],
         $object['works_location_type'], $object['proposed_start_date'], $object['proposed_end_date'], $object['work_category'],
-        $object['work_status'], $object['traffic_management_type'], $object['permit_status'], $object['close_footway']
+        $object['work_status'], $object['traffic_management_type'], $object['permit_status'], $object['close_footway'],
+        $object['street_name']??null, $object['area_name']??null,
 	]);
 }

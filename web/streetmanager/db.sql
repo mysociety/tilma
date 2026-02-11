@@ -11,7 +11,9 @@ CREATE TABLE streetmanager (
    work_status TEXT,
    traffic_management_type TEXT,
    permit_status TEXT,
-   close_footway TEXT
+   close_footway TEXT,
+   street_name TEXT,
+   area_name TEXT
 );
 
 CREATE INDEX streetmanager_location_idx ON streetmanager USING gist(location);
