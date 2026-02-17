@@ -15,7 +15,7 @@ $n = $bbox[3];
 
 $poly = "POLYGON (($w $n, $e $n, $e $s, $w $s, $w $n))";
 $params = [ "query" => str_replace("__BBOX__", $poly, $layer_cfg['query']) ];
-$result = make_request($cfg['url'], $cfg['key'], $params, "Basic")->data->jobs;
+$result = make_request($cfg['url'], $cfg['key'], $params, "Basic")->data{$layer_cfg['results_key']};
 
 foreach ($result as $feature) {
     if (!$layer_cfg['filter'] || $layer_cfg['filter']($feature)) {
