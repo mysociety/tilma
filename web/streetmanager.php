@@ -52,6 +52,12 @@ function data_as_geojson($row) {
         'summary' => $summary,
         'promoter' => prettify_text($row['promoter_organisation']),
     ];
+    if ($row['street_name']) {
+        $properties['street_name'] = prettify_text($row['street_name']);
+    }
+    if ($row['area_name']) {
+        $properties['area_name'] = prettify_text($row['area_name']);
+    }
     return [
         "type" => "Feature",
         "geometry" => json_decode($row['geojson'], 1),
