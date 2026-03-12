@@ -46,5 +46,12 @@ lincolnshire:
     dir: /dir
     out: /data/vhost/layers
 
+rutland:
+    host: host
+    username: username
+    password: password
+    dir: /dir
+    out: /data/vhost/layers
+
 shropshire:
     out: /data/vhost/layers
