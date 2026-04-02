@@ -14,6 +14,6 @@ trap 'rm -rf "$TMPDIR"' EXIT
 cd $TMPDIR
 
 curl -sS -O -u "$OPTION_rutland__username:$OPTION_rutland__password" \
-    "sftp://${OPTION_rutland__host}${OPTION_rutland__dir}/ums_inventory.{dbf,prj,shp,shx}"
+    "sftp://${OPTION_rutland__host}${OPTION_rutland__dir}/street_lighting.{dbf,prj,shp,shx}"
 
 mv ./*.{dbf,prj,shp,shx} "$OPTION_rutland__out"
