@@ -1,0 +1,77 @@
+#!/usr/bin/php
+<?php
+
+# This script will, given a 'url' and a layer name, fetch the features using
+# the query from configuration
+
+require_once dirname(__FILE__) . '/../conf/config';
+require_once dirname(__FILE__) . '/../web/fns.php';
+
+$url = get('url', 'https://[a-z.]+');
+$cfg = CONFIRM_API_CONFIG[$url] ?? null;
+if (!$cfg) { print 'Bad url'; exit; }
+
+$layer = get('layer', '.*');
+$layer_cfg = CONFIRM_LAYER_CONFIG[$url][$layer] ?? null;
+if (!$layer_cfg) { print 'Bad layer'; exit; }
+
+$dir = get('dir', '.*');
+if (!$dir) { print 'Bad dir'; exit; }
+$name = get('name', '.*');
+if (!$name) { print 'Bad name'; exit; }
+
+# Read latest out of current file? Something like this works:
+# ogrinfo -ro -al GRIT.gpkg |grep revisionNumber|perl -pe's/^.* //;'|sort -n|uniq|tail -1
+$revision = 0;
+
+$query = str_replace('__GEOMETRY__', "", $layer_cfg['query']); # No BBOX
+if ($revision) {
+    $query = str_replace('__REVISION__', "revisionNumber: {greaterThan: $revision},", $query);
+} else {
+    $query = str_replace('__REVISION__', '', $query);
+}
+$params = [ "query" => $query ];
+$result = make_request($cfg['url'], $cfg['key'], $params, "Basic");
+if (!$result) {
+    print "Error fetching $cfg[layer] from $cfg[url]\n";
+    exit;
+}
+
+$result = $result->data->features;
+foreach ($result as $feature) {
+    if (!$feature->geometry) continue;
+    $filter = $layer_cfg['filter'] ?? null;
+    if (!$filter || $filter($feature)) {
+        $features[] = data_as_geojson($feature, $layer_cfg);
+    }
+}
+
+if (count($features)) {
+    $json = json_encode($geojson);
+    $temp_json = "$dir/$name.geojson";
+    $temp_gpkg = "$dir/$name.new.gpkg";
+    file_put_contents($temp_json, $json);
+    `ogr2ogr -t_srs EPSG:27700 -s_srs EPSG:4326 -f GPKG -nln $name $temp_gpkg $temp_json`;
+    unlink($temp_json);
+    rename($temp_gpkg, "$dir/$name.gpkg");
+}
+
+# ---
+
+function data_as_geojson($feature, $layer_cfg) {
+    list($pre, $lon, $lat) = explode(" ", $feature->geometry);
+    $lon = substr($lon, 1);
+    $lat = substr($lat, 0, -1);
+    unset($feature->geometry);
+    if ($formatter = $layer_cfg['formatter'] ?? null) {
+        $feature = $formatter($feature);
+    }
+    return [
+        "type" => "Feature",
+        "geometry" => [
+            "type" => "Point",
+            "coordinates" => [floatval($lon), floatval($lat)],
+        ],
+        "properties" => $feature,
+    ];
+}

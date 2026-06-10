@@ -29,7 +29,7 @@ function get_alloy_token() {
 
 function get_confirm_cfg() {
     $url = get('url', 'https://[a-z.]+');
-    $cfg = CONFIRM_API_CONFIG[$url];
+    $cfg = CONFIRM_API_CONFIG[$url] ?? null;
     if (!$cfg) {
         print EMPTY_RESULT;
         exit;
@@ -39,7 +39,7 @@ function get_confirm_cfg() {
 
 function get_confirm_layer_cfg($layer) {
     $url = get('url', 'https://[a-z.]+');
-    $cfg = CONFIRM_LAYER_CONFIG[$url][$layer];
+    $cfg = CONFIRM_LAYER_CONFIG[$url][$layer] ?? null;
     if (!$cfg) {
         print EMPTY_RESULT;
         exit;
