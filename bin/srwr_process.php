@@ -59,7 +59,7 @@ function deleteFiles() {
 
 function fetchCSVFile() {
 	global $path;
-	$url = 'https://downloads.srwr.scot/export/api/v1/daily';
+	$url = 'https://downloads.srwr.scot/export/api/v1/daily/';
 
 	$ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -68,17 +68,9 @@ function fetchCSVFile() {
     $response = curl_exec($ch);
     $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     if ($httpcode != 200) {
-		die("Error: Fetching url for zip file failed");
+		die("Error: Fetching zip file failed");
     } else {
-		$data = json_decode($response, true);
-		$url = $data['url'];
-		curl_setopt($ch, CURLOPT_URL, $url);
-		$response = curl_exec($ch);
-		if ($httpcode != 200) {
-			die("Error: Fetching zip file failed");
-    	} else {
-			file_put_contents($path . 'daily.zip', $response);
-		}
+		file_put_contents($path . 'daily.zip', $response);
     }
     curl_close($ch);
     $ch = null;
