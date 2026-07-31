@@ -3,7 +3,8 @@
 set -e
 
 source /data/mysociety/shlib/deployfns
-read_conf "$(dirname "$0")/../conf/general.yml"
+DIR="$(dirname "$0")"
+read_conf "$DIR/../conf/general.yml"
 
 TMPDIR=$(mktemp -d) || exit 1
 trap 'rm -rf "$TMPDIR"' EXIT
@@ -30,3 +31,6 @@ ogrinfo -q LAMP.gpkg -sql "ALTER TABLE LAMP ADD COLUMN OWNER TEXT"
 ogrinfo -q PLMP.gpkg -sql "ALTER TABLE PLMP ADD COLUMN PART_NIGHT TEXT"
 
 mv *.gpkg $OPTION_shropshire__out
+
+# And WBIN
+php-cgi -q "$DIR/confirm-layer-fetch" url=https://shropshire.assets layer=WBIN dir=$OPTION_shropshire__out name=WBIN
