@@ -1,5 +1,6 @@
 {
     "require": {
-        "aws/aws-php-sns-message-validator": "^1.9"
+        "aws/aws-php-sns-message-validator": "^1.9",
+        "phayes/geophp": "^1.2"
     }
 }
