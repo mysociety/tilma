@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__) . '/../conf/config';
 require_once dirname(__FILE__) . '/fns.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 $bbox = get_bbox();
 $layer = get('layer', '.*');
@@ -32,19 +33,14 @@ print json_encode($geojson);
 # ---
 
 function data_as_geojson($feature, $layer_cfg) {
-    list($pre, $lon, $lat) = explode(" ", $feature->geometry);
-    $lon = substr($lon, 1);
-    $lat = substr($lat, 0, -1);
+    $geom = geoPHP::load($feature->geometry, "wkt");
     unset($feature->geometry);
     if ($formatter = $layer_cfg['formatter'] ?? null) {
         $feature = $formatter($feature);
     }
     return [
         "type" => "Feature",
-        "geometry" => [
-            "type" => "Point",
-            "coordinates" => [floatval($lon), floatval($lat)],
-        ],
+        "geometry" => json_decode($geom->out('json')),
         "properties" => $feature,
     ];
 }
