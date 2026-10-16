@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Fetch Canal & River Trust asset layers from ArcGIS Online and add an
+# is_trust_owned attribute, which is false for any asset whose functional
+# location appears in the not_trust_owned CSV. That has functional_location
+# and description columns, taken from the "Functional Loc." and "Description"
+# columns of the "Not Trust Owned Principal Assets" spreadsheet. (GDAL 3.6
+# can't read a CSV with only one column.)
+
+set -eo pipefail
+
+source /data/mysociety/shlib/deployfns
+read_conf "$(dirname "$0")/../conf/general.yml"
+
+CSV="$OPTION_canalrivertrust__not_trust_owned"
+OUT_DIR="$OPTION_canalrivertrust__out"
+BASE='https://services.arcgis.com/DknzyjEEie5tEW0u/arcgis/rest/services'
+
+declare -A services=(
+    ["aqueducts"]='Canal_And_River_Trust_Aqueducts_view'
+    ["bridges"]='Canal_And_River_Trust_Bridges_View'
+    ["facilities"]='Web_CSF_Facilities'
+    ["locks"]='Canal_And_River_Trust_Locks_View'
+    ["tunnel_portals"]='Canal_And_River_Trust_Tunnel_Portals_View'
+    ["tunnels"]='Canal_And_River_Trust_Tunnels_View'
+)
+
+# ogrinfo (at least in GDAL 3.6) exits 0 even if the SQL fails, but prints
+# nothing on success, so treat any output as an error
+sql() {
+    local output
+    output=$(ogrinfo -q $1 -sql "$2" 2>&1)
+    if [ -n "$output" ]; then
+        echo "$output" >&2
+        exit 1
+    fi
+}
+
+TMPDIR=$(mktemp -d) || exit 1
+trap 'rm -rf "$TMPDIR"' EXIT
+cd $TMPDIR
+
+for layer in "${!services[@]}"; do
+    # GDAL pages through the results itself (max 2000 per request), and
+    # fails if any page does. A separate fid keeps OBJECTID as a normal field.
+    ogr2ogr -f GPKG -t_srs EPSG:27700 -lco FID=fid -nln $layer $layer.gpkg \
+        "$BASE/${services[$layer]}/FeatureServer/0/query?where=1%3D1&outFields=*&orderByFields=OBJECTID&f=json"
+
+    ogr2ogr -update -nln not_trust_owned $layer.gpkg "$CSV"
+    sql $layer.gpkg "ALTER TABLE $layer ADD COLUMN is_trust_owned BOOLEAN NOT NULL DEFAULT 1"
+    sql $layer.gpkg "UPDATE $layer SET is_trust_owned = 0 WHERE sap_func_loc IN (SELECT functional_location FROM not_trust_owned)"
+    sql $layer.gpkg "DROP TABLE not_trust_owned"
+    sql $layer.gpkg "VACUUM"
+done
+
+mkdir -p "$OUT_DIR"
+mv ./*.gpkg "$OUT_DIR"

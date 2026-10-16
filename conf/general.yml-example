@@ -55,3 +55,7 @@ rutland:
 
 shropshire:
     out: /data/vhost/layers
+
+canalrivertrust:
+    not_trust_owned: /data/vhost/layers/crt/not-trust-owned.csv
+    out: /data/vhost/layers
