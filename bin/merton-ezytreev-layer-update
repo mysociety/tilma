@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+
+source /data/mysociety/shlib/deployfns
+read_conf "$(dirname "$0")/../conf/general.yml"
+
+# Ensure that the SSH keys for the SFTP server have been accepted
+[ -e ~/.ssh/known_hosts ] || install -D -m 0644 /dev/null ~/.ssh/known_hosts
+grep $OPTION_merton__host ~/.ssh/known_hosts >/dev/null || ssh-keyscan $OPTION_merton__host >> ~/.ssh/known_hosts
+
+TMPDIR=$(mktemp -d) || exit 1
+trap 'rm -rf "$TMPDIR"' EXIT
+cd $TMPDIR
+
+curl -sS -O -u "$OPTION_merton__username:$OPTION_merton__password" \
+    "sftp://${OPTION_merton__host}${OPTION_merton__dir}/All_Trees.zip"
+unzip -q All_Trees.zip
+
+curl -sS -O -u "$OPTION_merton__username:$OPTION_merton__password" \
+    "sftp://${OPTION_merton__host}${OPTION_merton__dir}/Ezytreev_Groups.zip"
+unzip -q Ezytreev_Groups.zip
+
+# Check we are dealing with valid shapefiles.
+for f in All_Trees/All_Trees Ezytreev_Groups/Ezytreev_Groups; do
+    if ! ogrinfo -ro -so -al "${f}.shp" 2>&1 | grep -q 'Feature Count: [^0]' ; then
+        echo "Invalid shapefile detected, aborting to prevent bad data" 1>&2
+        exit 1
+    fi
+done
+
+mv All_Trees/*.{dbf,prj,shp,shx} "$OPTION_merton__out"
+mv Ezytreev_Groups/*.{dbf,prj,shp,shx} "$OPTION_merton__out"
