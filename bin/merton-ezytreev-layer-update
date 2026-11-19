@@ -22,12 +22,12 @@ curl -sS -O -u "$OPTION_merton__username:$OPTION_merton__password" \
 unzip -q Ezytreev_Groups.zip
 
 # Check we are dealing with valid shapefiles.
-for f in All_Trees/All_Trees Ezytreev_Groups/Ezytreev_Groups; do
+for f in All_Trees Ezytreev_Groups; do
     if ! ogrinfo -ro -so -al "${f}.shp" 2>&1 | grep -q 'Feature Count: [^0]' ; then
         echo "Invalid shapefile detected, aborting to prevent bad data" 1>&2
         exit 1
     fi
 done
 
-mv All_Trees/*.{dbf,prj,shp,shx} "$OPTION_merton__out"
-mv Ezytreev_Groups/*.{dbf,prj,shp,shx} "$OPTION_merton__out"
+mv All_Trees.{dbf,prj,shp,shx} "$OPTION_merton__out"
+mv Ezytreev_Groups.{dbf,prj,shp,shx} "$OPTION_merton__out"
